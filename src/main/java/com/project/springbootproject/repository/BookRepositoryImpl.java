@@ -5,12 +5,16 @@ import com.project.springbootproject.model.Book;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public class BookRepositoryImpl implements BookRepository{
+@Repository
+public class BookRepositoryImpl implements BookRepository {
     private final SessionFactory sessionFactory;
 
+    @Autowired
     public BookRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
@@ -39,9 +43,9 @@ public class BookRepositoryImpl implements BookRepository{
 
     @Override
     public List<Book> findAll() {
-        try (Session session = sessionFactory.openSession()){
+        try (Session session = sessionFactory.openSession()) {
             return session.createQuery("SELECT b FROM Book b", Book.class).getResultList();
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new DataProcessingException("Can't get all Books", e);
         }
     }
