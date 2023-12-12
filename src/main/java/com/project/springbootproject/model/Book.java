@@ -5,10 +5,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.math.BigDecimal;
 import lombok.Data;
 import lombok.NonNull;
-
-import java.math.BigDecimal;
 
 @Entity
 @Data
@@ -27,7 +26,6 @@ public class Book {
     private BigDecimal price;
     private String description;
     private String coverImage;
-
 
     public Book() {
 

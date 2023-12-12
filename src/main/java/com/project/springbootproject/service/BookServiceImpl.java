@@ -2,14 +2,15 @@ package com.project.springbootproject.service;
 
 import com.project.springbootproject.model.Book;
 import com.project.springbootproject.repository.BookRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class BookServiceImpl implements BookService {
-    private BookRepository bookRepository;
+    private final BookRepository bookRepository;
 
+    @Autowired
     public BookServiceImpl(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
