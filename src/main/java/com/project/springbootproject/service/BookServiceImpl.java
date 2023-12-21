@@ -1,5 +1,7 @@
 package com.project.springbootproject.service;
 
+import com.project.springbootproject.dto.BookDto;
+import com.project.springbootproject.mapper.BookMapper;
 import com.project.springbootproject.model.Book;
 import com.project.springbootproject.repository.BookRepository;
 import java.util.List;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
+    private BookMapper bookMapper;
 
     @Autowired
     public BookServiceImpl(BookRepository bookRepository) {
@@ -21,7 +24,10 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> findAll() {
-        return bookRepository.findAll();
+    public List<BookDto> findAll() {
+        return bookRepository.findAll()
+                .stream()
+                .map(bookMapper::toDto)
+                .toList();
     }
 }

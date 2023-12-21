@@ -1,5 +1,6 @@
 package com.project.springbootproject.controller;
 
+import com.project.springbootproject.dto.BookDto;
 import com.project.springbootproject.model.Book;
 import com.project.springbootproject.service.BookService;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping
-    public List<Book> findALL() {
+    public List<BookDto> findALL() {
         return bookService.findAll();
     }
 
