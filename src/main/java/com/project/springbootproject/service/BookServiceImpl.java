@@ -7,7 +7,7 @@ import com.project.springbootproject.mapper.BookMapper;
 import com.project.springbootproject.model.Book;
 import com.project.springbootproject.repository.BookRepository;
 import java.util.List;
-import java.util.Random;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,6 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto save(CreateBookRequestDto createBookRequestDto) {
         Book book = bookMapper.toModel(createBookRequestDto);
-        book.setIsbn(new Random().nextInt(1000) + "abc");
         return bookMapper.toDto(bookRepository.save(book));
     }
 
@@ -29,11 +28,11 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findAll()
                 .stream()
                 .map(bookMapper::toDto)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override
-    public BookDto findBookbyId(Long id) {
+    public BookDto findBookById(Long id) {
         Book book = bookRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Can not find book with id: " + id)
         );
