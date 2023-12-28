@@ -2,6 +2,7 @@ package com.project.springbootproject.service;
 
 import com.project.springbootproject.dto.BookDto;
 import com.project.springbootproject.dto.CreateBookRequestDto;
+
 import java.util.List;
 
 public interface BookService {
@@ -10,4 +11,7 @@ public interface BookService {
     List<BookDto> findAll();
 
     BookDto findBookById(Long id);
+
+    void deleteById(Long id);
+
 }
