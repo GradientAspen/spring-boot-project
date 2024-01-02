@@ -51,10 +51,12 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void updateBook(BookDto bookDto) {
-        Optional<Book> book = bookRepository.findById(bookDto.getId());
-        bookMapper.updateBookFromBookDto(bookDto, book);
-        bookRepository.save(book.orElseThrow(
-                () -> new EntityNotFoundException("Can not update Book")));
+        Optional<Book> optionalBook = bookRepository.findById(bookDto.getId());
+        Book bookToUpdate = optionalBook.orElseThrow(
+                () -> new EntityNotFoundException("Can not find Book"));
+
+        bookMapper.updateBookFromBookDto(bookDto, bookToUpdate);
+        bookRepository.save(bookToUpdate);
     }
 
 }

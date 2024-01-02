@@ -18,5 +18,5 @@ public interface BookMapper {
     Book toModel(CreateBookRequestDto createBookRequestDto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateBookFromBookDto(BookDto bookDto, @MappingTarget Optional<Book> book);
+    void updateBookFromBookDto(BookDto bookDto, @MappingTarget Book book);
 }
