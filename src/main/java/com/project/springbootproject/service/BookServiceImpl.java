@@ -6,7 +6,9 @@ import com.project.springbootproject.exception.EntityNotFoundException;
 import com.project.springbootproject.mapper.BookMapper;
 import com.project.springbootproject.model.Book;
 import com.project.springbootproject.repository.BookRepository;
+
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import jakarta.transaction.Transactional;
@@ -45,6 +47,14 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteById(Long id) {
         bookRepository.deleteById(id);
+    }
+
+    @Override
+    public void updateBook(BookDto bookDto) {
+        Optional<Book> book = bookRepository.findById(bookDto.getId());
+        bookMapper.updateBookFromBookDto(bookDto, book);
+        bookRepository.save(book.orElseThrow(
+                () -> new EntityNotFoundException("Can not update Book")));
     }
 
 }
