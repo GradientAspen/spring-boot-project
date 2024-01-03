@@ -9,6 +9,7 @@ databaseChangeLog:
               - column:
                   name: id
                   type: BIGINT
+                  autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -31,9 +32,9 @@ databaseChangeLog:
                   name: description
                   type: VARCHAR(1000)
               - column:
-                  name: coverImage
+                  name: cover_image
                   type: VARCHAR(255)
               - column:
-                  name: isDeleted
+                  name: is_deleted
                   type: BOOLEAN
                   defaultValue: false

@@ -3,10 +3,8 @@ package com.project.springbootproject.controller;
 import com.project.springbootproject.dto.BookDto;
 import com.project.springbootproject.dto.CreateBookRequestDto;
 import com.project.springbootproject.service.BookService;
-
-import java.util.List;
-
 import jakarta.transaction.Transactional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -53,6 +51,4 @@ public class BookController {
         bookDto.setId(id);
         bookService.updateBook(bookDto);
     }
-
-
 }
