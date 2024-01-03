@@ -13,6 +13,6 @@ public interface BookService {
 
     void deleteById(Long id);
 
-    void updateBook(CreateBookRequestDto bookDto);
+    void updateBook(CreateBookRequestDto bookDto, Long id);
 
 }
