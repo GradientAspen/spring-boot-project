@@ -6,17 +6,15 @@ import com.project.springbootproject.dto.BookSearchParameters;
 import com.project.springbootproject.exception.EntityNotFoundException;
 import com.project.springbootproject.mapper.BookMapper;
 import com.project.springbootproject.model.Book;
-import com.project.springbootproject.repository.BookRepository;
-import com.project.springbootproject.repository.BookSpecificationBuilder;
+import com.project.springbootproject.repository.book.BookRepository;
+import com.project.springbootproject.repository.book.BookSpecificationBuilder;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Service;
-
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor

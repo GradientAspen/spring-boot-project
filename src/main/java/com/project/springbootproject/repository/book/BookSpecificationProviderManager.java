@@ -1,10 +1,12 @@
-package com.project.springbootproject.repository;
+package com.project.springbootproject.repository.book;
 
 import com.project.springbootproject.model.Book;
+import java.util.List;
+
+import com.project.springbootproject.repository.SpecificationProvider;
+import com.project.springbootproject.repository.SpecificationProviderManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -17,6 +19,8 @@ public class BookSpecificationProviderManager implements SpecificationProviderMa
                 .stream()
                 .filter(p -> p.getKey().equals(key))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Can not find specification provider for key:" + key));
+                .orElseThrow(()
+                        -> new RuntimeException("Can not find specification provider for key:"
+                        + key));
     }
 }

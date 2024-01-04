@@ -1,4 +1,4 @@
-package com.project.springbootproject.repository;
+package com.project.springbootproject.repository.book;
 
 import com.project.springbootproject.model.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
