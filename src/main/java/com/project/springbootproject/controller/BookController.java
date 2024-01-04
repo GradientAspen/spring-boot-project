@@ -1,7 +1,8 @@
 package com.project.springbootproject.controller;
 
 import com.project.springbootproject.dto.BookDto;
-import com.project.springbootproject.dto.CreateBookRequestDto;
+import com.project.springbootproject.dto.BookRequestDto;
+import com.project.springbootproject.dto.BookSearchParameters;
 import com.project.springbootproject.service.BookService;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -35,8 +36,8 @@ public class BookController {
     }
 
     @PostMapping
-    public BookDto save(@RequestBody CreateBookRequestDto createBookRequestDto) {
-        return bookService.save(createBookRequestDto);
+    public BookDto save(@RequestBody BookRequestDto bookRequestDto) {
+        return bookService.save(bookRequestDto);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -47,8 +48,12 @@ public class BookController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateBook(@PathVariable Long id, @RequestBody CreateBookRequestDto bookDto) {
-
+    public void updateBook(@PathVariable Long id, @RequestBody BookRequestDto bookDto) {
         bookService.updateBook(bookDto, id);
+    }
+
+    @GetMapping("/search")
+    public List<BookDto> search(BookSearchParameters bookSearchParameters){
+        return bookService.search(bookSearchParameters);
     }
 }

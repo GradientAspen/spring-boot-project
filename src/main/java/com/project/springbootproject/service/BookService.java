@@ -1,11 +1,13 @@
 package com.project.springbootproject.service;
 
 import com.project.springbootproject.dto.BookDto;
-import com.project.springbootproject.dto.CreateBookRequestDto;
+import com.project.springbootproject.dto.BookRequestDto;
+import com.project.springbootproject.dto.BookSearchParameters;
+
 import java.util.List;
 
 public interface BookService {
-    BookDto save(CreateBookRequestDto createBookRequestDto);
+    BookDto save(BookRequestDto bookRequestDto);
 
     List<BookDto> findAll();
 
@@ -13,6 +15,8 @@ public interface BookService {
 
     void deleteById(Long id);
 
-    void updateBook(CreateBookRequestDto bookDto, Long id);
+    void updateBook(BookRequestDto bookDto, Long id);
+
+    List<BookDto> search(BookSearchParameters params);
 
 }
