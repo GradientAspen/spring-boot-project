@@ -3,7 +3,6 @@ package com.project.springbootproject.dto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-
 import java.math.BigDecimal;
 
 @Data
@@ -16,7 +15,7 @@ public class BookRequestDto {
     @NotNull(message = "Isbn cannot be null")
     private String isbn;
     @NotNull(message = "Price cannot be null")
-    @Min(0)
+    @Min(message = "Price must be greater than 0", value = 0)
     private BigDecimal price;
     private String description;
     private String coverImage;

@@ -1,6 +1,5 @@
 package com.project.springbootproject.validation;
 
-import com.project.springbootproject.dto.BookRequestDto;
 import com.project.springbootproject.repository.book.BookRepository;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
