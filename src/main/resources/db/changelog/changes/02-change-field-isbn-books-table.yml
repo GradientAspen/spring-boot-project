@@ -1,9 +1,0 @@
-databaseChangeLog:
-  - changeSet:
-      id: modify-isbn-column
-      author: Vasyliev
-      changes:
-        - modifyDataType:
-            tableName: books
-            columnName: isbn
-            newDataType: VARCHAR(255)
