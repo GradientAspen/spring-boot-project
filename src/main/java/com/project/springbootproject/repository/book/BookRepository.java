@@ -9,4 +9,5 @@ public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificat
     void deleteById(Long id);
 
     BookRequestDto findBookByIsbn(String isbn);
+
 }

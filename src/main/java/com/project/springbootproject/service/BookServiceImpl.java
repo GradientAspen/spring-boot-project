@@ -9,12 +9,14 @@ import com.project.springbootproject.model.Book;
 import com.project.springbootproject.repository.book.BookRepository;
 import com.project.springbootproject.repository.book.BookSpecificationBuilder;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -31,8 +33,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDto> findAll() {
-        return bookRepository.findAll()
+    public List<BookDto> findAll(Pageable pageable) {
+        return bookRepository.findAll(pageable)
                 .stream()
                 .map(bookMapper::toDto)
                 .collect(Collectors.toList());
