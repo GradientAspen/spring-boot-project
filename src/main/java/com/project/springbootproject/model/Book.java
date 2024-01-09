@@ -23,12 +23,11 @@ public class Book {
     private Long id;
     @NonNull
     private String title;
-    @NonNull
+
     private String author;
-    @NonNull
-    @Column(unique = true)
+
     private String isbn;
-    @NonNull
+
     private BigDecimal price;
     private String description;
     private String coverImage;
