@@ -4,6 +4,7 @@ import com.project.springbootproject.dto.userDto.UserDto;
 import com.project.springbootproject.dto.userDto.UserRequestDto;
 import com.project.springbootproject.exception.RegistrationException;
 import com.project.springbootproject.service.user.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +18,7 @@ public class AuthenticationController {
     private final UserService userService;
 
     @PostMapping("/registration")
-    public UserDto registerUser(@RequestBody UserRequestDto userRequestDto) throws RegistrationException {
+    public UserDto registerUser(@Valid @RequestBody UserRequestDto userRequestDto) throws RegistrationException {
         return userService.register(userRequestDto);
     }
 

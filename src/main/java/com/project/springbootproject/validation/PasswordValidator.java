@@ -7,9 +7,9 @@ import jakarta.validation.ConstraintValidatorContext;
 public class PasswordValidator implements ConstraintValidator<FieldMatch, UserRequestDto> {
 
     @Override
-    public boolean isValid(UserRequestDto user, ConstraintValidatorContext constraintValidatorContext) {
-        String password = user.getPassword();
-        String repeatPassword = user.getRepeatPassword();
+    public boolean isValid(UserRequestDto userRequestDto, ConstraintValidatorContext constraintValidatorContext) {
+        String password = userRequestDto.getPassword();
+        String repeatPassword = userRequestDto.getRepeatPassword();
         return password != null && password.equals(repeatPassword);
     }
 }
