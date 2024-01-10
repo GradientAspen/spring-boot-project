@@ -30,6 +30,8 @@ public class User {
     @NonNull
     private String lastName;
     private String shippingAddress;
+    @Column(nullable = false)
+    private boolean isDeleted = false;
 
     public User() {
     }
