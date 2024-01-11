@@ -1,4 +1,4 @@
-package com.project.springbootproject.dto.userDto;
+package com.project.springbootproject.dto.userdto;
 
 import com.project.springbootproject.validation.FieldMatch;
 import jakarta.validation.constraints.Email;

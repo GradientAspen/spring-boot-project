@@ -1,8 +1,8 @@
 package com.project.springbootproject.mapper;
 
 import com.project.springbootproject.config.MapperConfig;
-import com.project.springbootproject.dto.userDto.UserDto;
-import com.project.springbootproject.dto.userDto.UserRequestDto;
+import com.project.springbootproject.dto.userdto.UserDto;
+import com.project.springbootproject.dto.userdto.UserRequestDto;
 import com.project.springbootproject.model.User;
 import org.mapstruct.Mapper;
 

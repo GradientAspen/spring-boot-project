@@ -1,7 +1,7 @@
 package com.project.springbootproject.controller;
 
-import com.project.springbootproject.dto.userDto.UserDto;
-import com.project.springbootproject.dto.userDto.UserRequestDto;
+import com.project.springbootproject.dto.userdto.UserDto;
+import com.project.springbootproject.dto.userdto.UserRequestDto;
 import com.project.springbootproject.exception.RegistrationException;
 import com.project.springbootproject.service.user.UserService;
 import jakarta.validation.Valid;
@@ -18,7 +18,8 @@ public class AuthenticationController {
     private final UserService userService;
 
     @PostMapping("/registration")
-    public UserDto registerUser(@Valid @RequestBody UserRequestDto userRequestDto) throws RegistrationException {
+    public UserDto registerUser(@Valid @RequestBody UserRequestDto userRequestDto)
+            throws RegistrationException {
         return userService.register(userRequestDto);
     }
 
