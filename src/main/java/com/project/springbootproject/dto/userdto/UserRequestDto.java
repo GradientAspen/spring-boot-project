@@ -7,7 +7,6 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 @Data
-
 public class UserRequestDto {
     @NotNull
     @Email(message = "Invalid email format")
