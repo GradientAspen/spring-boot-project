@@ -11,9 +11,9 @@ public class UserRequestDto {
     @NotNull
     @Email(message = "Invalid email format")
     private String email;
-    @FieldMatch
     @NotNull
     @Length(min = 8, max = 20)
+    //@FieldMatch
     private String password;
     @NotNull
     @Length(min = 8, max = 20)
