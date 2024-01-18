@@ -6,6 +6,7 @@ import com.project.springbootproject.exception.RegistrationException;
 import com.project.springbootproject.mapper.UserMapper;
 import com.project.springbootproject.model.User;
 import com.project.springbootproject.repository.user.UserRepository;
+import com.project.springbootproject.util.HashUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,10 @@ public class UserServiceImpl implements UserService {
 
         User user = new User();
         user.setEmail(userRequestDto.getEmail());
-        user.setPassword(userRequestDto.getPassword());
+        byte[] salt = HashUtil.getSalt();
+        user.setSalt(salt);
+        String hashedPassword = HashUtil.hashPassword(userRequestDto.getPassword(), salt);
+        user.setPassword(hashedPassword);
         user.setFirstName(userRequestDto.getFirstName());
         user.setLastName(userRequestDto.getLastName());
         user.setShippingAddress(userRequestDto.getShippingAddress());

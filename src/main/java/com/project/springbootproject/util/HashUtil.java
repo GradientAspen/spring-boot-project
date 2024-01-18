@@ -13,7 +13,7 @@ public class HashUtil {
     public HashUtil() {
     }
 
-    public byte[] getSalt() {
+    public static byte[] getSalt() {
         SecureRandom secureRandom = new SecureRandom();
         byte[] salt = new byte[DEFAULT_CAPACITY];
         secureRandom.nextBytes(salt);

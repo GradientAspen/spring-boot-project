@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-salt-colubnt-to-user
+      author: Vasyliev
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - name: salt
+              - type: BLOB

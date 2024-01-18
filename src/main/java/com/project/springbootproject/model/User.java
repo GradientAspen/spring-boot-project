@@ -12,7 +12,6 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
 import java.util.List;
 
@@ -37,6 +36,7 @@ public class User implements UserDetails {
     private String shippingAddress;
     @Column(nullable = false)
     private boolean isDeleted = false;
+    private byte[] salt;
 
     public User() {
     }
@@ -50,6 +50,7 @@ public class User implements UserDetails {
     public String getUsername() {
         return email;
     }
+
     @Override
     public String getPassword() {
         return password;
