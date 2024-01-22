@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-role-table
+      author: Vasyliev
+      changes:
+        - createTable:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: role
+                  type: VARCHAR(255)
+                  constraints:
+                    unique: true
+                    nullable: false
+
+  - changeSet:
+      id: addRoleData
+      author: Vasyliev
+      changes:
+        - insert:
+            tableName: role
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 1
+              - column:
+                  name: role
+                  value: USER
+        - insert:
+            tableName: role
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 2
+              - column:
+                  name: role
+                  value: ADMIN
