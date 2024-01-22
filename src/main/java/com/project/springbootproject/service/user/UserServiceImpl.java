@@ -8,6 +8,7 @@ import com.project.springbootproject.model.User;
 import com.project.springbootproject.repository.user.UserRepository;
 import com.project.springbootproject.util.HashUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDto register(UserRequestDto userRequestDto) {
@@ -24,10 +26,7 @@ public class UserServiceImpl implements UserService {
 
         User user = new User();
         user.setEmail(userRequestDto.getEmail());
-        byte[] salt = HashUtil.getSalt();
-        user.setSalt(salt);
-        String hashedPassword = HashUtil.hashPassword(userRequestDto.getPassword(), salt);
-        user.setPassword(hashedPassword);
+        user.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
         user.setFirstName(userRequestDto.getFirstName());
         user.setLastName(userRequestDto.getLastName());
         user.setShippingAddress(userRequestDto.getShippingAddress());
