@@ -7,6 +7,7 @@ databaseChangeLog:
       file: db/changelog/changes/03-add-column-salt-for-user.yml
   - include:
       file: db/changelog/changes/04-сreat-role-table.yml
-
-
-
+  - include:
+      file: db/changelog/changes/05-add-column-role-for-user.yml
+  - include:
+      file: db/changelog/changes/06-create-user-role-table.yml
