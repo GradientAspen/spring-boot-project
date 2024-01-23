@@ -14,7 +14,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: role
-                  type: VARCHAR(255)
+                  type: ENUM('user', 'admin')
                   constraints:
                     unique: true
                     nullable: false
@@ -24,7 +24,7 @@ databaseChangeLog:
       author: Vasyliev
       changes:
         - insert:
-            tableName: role
+            tableName: roles
             columns:
               - column:
                   name: id
@@ -33,7 +33,7 @@ databaseChangeLog:
                   name: role
                   value: USER
         - insert:
-            tableName: role
+            tableName: roles
             columns:
               - column:
                   name: id
