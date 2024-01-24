@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: addAdminUser
+      author: Vasyliev
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: email
+                  value: adminF@ukr.net
+              - column:
+                  name: password
+                  value: 123456789
+              - column:
+                  name: first_Name
+                  value: FirstAdmin
+              - column:
+                  name: last_Name
+                  value: SecondAdmin
+              - column:
+                  name: shipping_Address
+                  value: null
+
+        - insert:
+            tableName: users_roles
+            columns:
+              - column:
+                  name: user_id
+                  value: 1
+              - column:
+                  name: role_id
+                  value: 2

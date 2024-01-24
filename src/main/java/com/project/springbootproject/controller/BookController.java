@@ -9,12 +9,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-
 import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,25 +47,29 @@ public class BookController {
         return bookService.findBookById(id);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     @Operation(summary = "Add book in DB",
-            description = "Add book in DB")
+            description = "Add book in DB Only users with Role Admin have the ability  add book in DB.  ")
     public BookDto save(@Valid @RequestBody BookRequestDto bookRequestDto) {
         return bookService.save(bookRequestDto);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete book from DB",
-            description = "Delete book from Db")
+            description = "Delete book from Db. Only users with Role Admin have the ability  delete book from DB.")
     public void deleteBookById(@PathVariable Long id) {
         bookService.deleteById(id);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Update information about book",
-            description = "Update information about book")
+            description = "Update information about book. Only users with Role Admin have the ability update " +
+                    "information about book in DB.")
     public void updateBook(@PathVariable Long id, @RequestBody BookRequestDto bookDto) {
         bookService.updateBook(bookDto, id);
     }
