@@ -11,7 +11,7 @@ databaseChangeLog:
                   value: adminF@ukr.net
               - column:
                   name: password
-                  value: 123456789
+                  value: $2a$10$infZN/I8czc6BP2e98zy/uWgVdkNdQnoxdtibQq87TWvDpKNmaJ3i
               - column:
                   name: first_Name
                   value: FirstAdmin
