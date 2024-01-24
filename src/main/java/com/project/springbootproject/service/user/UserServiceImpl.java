@@ -6,7 +6,6 @@ import com.project.springbootproject.exception.RegistrationException;
 import com.project.springbootproject.mapper.UserMapper;
 import com.project.springbootproject.model.User;
 import com.project.springbootproject.repository.user.UserRepository;
-import com.project.springbootproject.util.HashUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,5 @@
 package com.project.springbootproject.security;
 
-import com.project.springbootproject.model.User;
 import com.project.springbootproject.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

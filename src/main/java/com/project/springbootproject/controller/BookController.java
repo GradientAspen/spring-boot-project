@@ -50,7 +50,8 @@ public class BookController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     @Operation(summary = "Add book in DB",
-            description = "Add book in DB Only users with Role Admin have the ability  add book in DB.  ")
+            description = "Add book in DB "
+                    + "Only users with Role Admin have the ability  add book in DB.  ")
     public BookDto save(@Valid @RequestBody BookRequestDto bookRequestDto) {
         return bookService.save(bookRequestDto);
     }
@@ -59,7 +60,8 @@ public class BookController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete book from DB",
-            description = "Delete book from Db. Only users with Role Admin have the ability  delete book from DB.")
+            description = "Delete book from Db. "
+                    + "Only users with Role Admin have the ability  delete book from DB.")
     public void deleteBookById(@PathVariable Long id) {
         bookService.deleteById(id);
     }
@@ -68,8 +70,9 @@ public class BookController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Update information about book",
-            description = "Update information about book. Only users with Role Admin have the ability update " +
-                    "information about book in DB.")
+            description = "Update information about book. "
+                    + "Only users with Role Admin have the ability update "
+                    + "information about book in DB.")
     public void updateBook(@PathVariable Long id, @RequestBody BookRequestDto bookDto) {
         bookService.updateBook(bookDto, id);
     }

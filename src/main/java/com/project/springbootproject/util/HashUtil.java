@@ -9,7 +9,6 @@ public class HashUtil {
     private static final int DEFAULT_CAPACITY = 16;
     private static final String FORMAT_SPECIFIER = "%02x";
 
-
     public HashUtil() {
     }
 
@@ -35,5 +34,4 @@ public class HashUtil {
         }
         return hashPassword.toString();
     }
-
 }
