@@ -3,4 +3,13 @@ databaseChangeLog:
       file: db/changelog/changes/01-create-books-table.yml
   - include:
       file: db/changelog/changes/02-create-user-table.yml
-
+  - include:
+      file: db/changelog/changes/03-add-column-salt-for-user.yml
+  - include:
+      file: db/changelog/changes/04-сreat-role-table.yml
+  - include:
+      file: db/changelog/changes/05-add-column-role-for-user.yml
+  - include:
+      file: db/changelog/changes/06-create-user-role-table.yml
+  - include:
+      file: db/changelog/changes/07-add-admin-in-user-table.yml
