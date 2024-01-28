@@ -1,7 +1,10 @@
 package com.project.springbootproject.controller;
 
 import com.project.springbootproject.dto.userdto.UserDto;
+import com.project.springbootproject.dto.userdto.UserLoginRequestDto;
+import com.project.springbootproject.dto.userdto.UserLoginResponseDto;
 import com.project.springbootproject.dto.userdto.UserRequestDto;
+import com.project.springbootproject.security.AuthenticationService;
 import com.project.springbootproject.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthenticationController {
     private final UserService userService;
+    private final AuthenticationService authenticationService;
 
     @PostMapping("/registration")
     public UserDto registerUser(@Valid @RequestBody UserRequestDto userRequestDto) {
@@ -22,8 +26,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public boolean login(@RequestBody UserRequestDto requestDto) {
-        return true;
+    public UserLoginResponseDto login(@RequestBody UserLoginRequestDto requestDto) {
+        return authenticationService.authenticate(requestDto);
     }
-
 }
