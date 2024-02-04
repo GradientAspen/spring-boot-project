@@ -13,3 +13,9 @@ databaseChangeLog:
       file: db/changelog/changes/06-create-user-role-table.yml
   - include:
       file: db/changelog/changes/07-add-admin-in-user-table.yml
+  - include:
+      file: db/changelog/changes/08-create-categories-table.yml
+  - include:
+      file: db/changelog/changes/09-add-category-for-books.yml
+  - include:
+      file: db/changelog/changes/10-create-books-categories-table.yml
