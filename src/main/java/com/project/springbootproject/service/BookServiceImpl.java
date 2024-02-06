@@ -1,6 +1,7 @@
 package com.project.springbootproject.service;
 
 import com.project.springbootproject.dto.BookDto;
+import com.project.springbootproject.dto.BookDtoWithoutCategoryIds;
 import com.project.springbootproject.dto.BookRequestDto;
 import com.project.springbootproject.dto.BookSearchParameters;
 import com.project.springbootproject.exception.EntityNotFoundException;
@@ -69,6 +70,15 @@ public class BookServiceImpl implements BookService {
                 .stream()
                 .map(bookMapper::toDto)
                 .toList();
+    }
+
+    @Override
+    public List<BookDtoWithoutCategoryIds> findBooksByCategoryId(Long categoryId) {
+        List<BookDtoWithoutCategoryIds> bookDtos = bookRepository.findById(categoryId)
+                .stream()
+                .map(bookMapper::toDtoWithoutCategories)
+                .collect(Collectors.toList());
+        return bookDtos;
     }
 
 }
