@@ -5,11 +5,14 @@ import com.project.springbootproject.dto.BookDto;
 import com.project.springbootproject.dto.BookDtoWithoutCategoryIds;
 import com.project.springbootproject.dto.BookRequestDto;
 import com.project.springbootproject.model.Book;
+import com.project.springbootproject.model.Category;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
+
+import java.util.stream.Collectors;
 
 @Mapper(config = MapperConfig.class)
 public interface BookMapper {
@@ -20,8 +23,11 @@ public interface BookMapper {
     BookDtoWithoutCategoryIds toDtoWithoutCategories(Book book);
 
     @AfterMapping
-    default void setCategoryIds(@MappingTarget BookDto bookDto, Book book){
-
+    default void setCategoryIds(@MappingTarget BookDto bookDto, Book book) {
+        bookDto.setCategoryIds(book.getCategories()
+                .stream()
+                .map(Category::getId)
+                .collect(Collectors.toSet()));
     }
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
