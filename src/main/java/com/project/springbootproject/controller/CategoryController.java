@@ -2,11 +2,11 @@ package com.project.springbootproject.controller;
 
 import com.project.springbootproject.dto.BookDtoWithoutCategoryIds;
 import com.project.springbootproject.dto.categoryDto.CategoryDto;
-import com.project.springbootproject.model.Category;
 import com.project.springbootproject.service.BookService;
 import com.project.springbootproject.service.category.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/category")
@@ -36,7 +34,7 @@ public class CategoryController {
             description = "Add Category in Db. " +
                     "Only user with role Admin have ability add category in DB"
     )
-    public CategoryDto createCategory(CategoryDto categoryDto) {
+    public CategoryDto createCategory(@RequestBody CategoryDto categoryDto) {
         return categoryService.save(categoryDto);
     }
 
@@ -48,7 +46,7 @@ public class CategoryController {
     @GetMapping("/{id}")
     @Operation(summary = "Get Category by Id",
             description = "Get Category from DB by ID")
-    public CategoryDto getCategoryById(Long id) {
+    public CategoryDto getCategoryById(@PathVariable Long id) {
         return categoryService.getById(id);
     }
 
@@ -70,14 +68,14 @@ public class CategoryController {
             description = "Delete Category. "
                     + "Only users with Role Admin have the ability delete "
                     + "category from DB.")
-    public void deleteCategory(Long id) {
+    public void deleteCategory(@PathVariable Long id) {
         categoryService.deleteById(id);
     }
 
     @GetMapping("/{id}/books")
     @Operation(summary = "Get books by Category",
             description = "Get books from DB by Category")
-    public List<BookDtoWithoutCategoryIds> getBooksByCategory(Long id) {
+    public List<BookDtoWithoutCategoryIds> getBooksByCategory(@PathVariable Long id) {
         return bookService.findBooksByCategoryId(id);
     }
 }
