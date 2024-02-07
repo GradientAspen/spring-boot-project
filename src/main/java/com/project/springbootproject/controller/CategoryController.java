@@ -1,7 +1,7 @@
 package com.project.springbootproject.controller;
 
 import com.project.springbootproject.dto.BookDtoWithoutCategoryIds;
-import com.project.springbootproject.dto.categoryDto.CategoryDto;
+import com.project.springbootproject.dto.categorydto.CategoryDto;
 import com.project.springbootproject.service.BookService;
 import com.project.springbootproject.service.category.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,8 +31,8 @@ public class CategoryController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     @Operation(summary = "Create category in DB",
-            description = "Add Category in Db. " +
-                    "Only user with role Admin have ability add category in DB"
+            description = "Add Category in Db. "
+                    + "Only user with role Admin have ability add category in DB"
     )
     public CategoryDto createCategory(@RequestBody CategoryDto categoryDto) {
         return categoryService.save(categoryDto);

@@ -29,7 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         String token = getToken(request);
 
-        boolean isTokenValid = jwtUtil.isValidToken(token);
+        //boolean isTokenValid = jwtUtil.isValidToken(token);
         if (token != null && jwtUtil.isValidToken(token)) {
             String userName = jwtUtil.getUsername(token);
             UserDetails userDetails = userDetailsService.loadUserByUsername(userName);

@@ -1,8 +1,6 @@
 package com.project.springbootproject.service.category;
 
-import com.project.springbootproject.dto.categoryDto.CategoryDto;
-import com.project.springbootproject.model.Category;
-
+import com.project.springbootproject.dto.categorydto.CategoryDto;
 import java.util.List;
 
 public interface CategoryService {

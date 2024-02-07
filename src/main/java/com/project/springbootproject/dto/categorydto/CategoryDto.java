@@ -1,4 +1,4 @@
-package com.project.springbootproject.dto.categoryDto;
+package com.project.springbootproject.dto.categorydto;
 
 import lombok.Data;
 

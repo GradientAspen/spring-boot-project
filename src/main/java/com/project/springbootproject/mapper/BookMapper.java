@@ -6,13 +6,12 @@ import com.project.springbootproject.dto.BookDtoWithoutCategoryIds;
 import com.project.springbootproject.dto.BookRequestDto;
 import com.project.springbootproject.model.Book;
 import com.project.springbootproject.model.Category;
+import java.util.stream.Collectors;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
-
-import java.util.stream.Collectors;
 
 @Mapper(config = MapperConfig.class)
 public interface BookMapper {

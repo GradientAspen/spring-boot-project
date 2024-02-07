@@ -13,7 +13,6 @@ import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
-
 import lombok.Data;
 import lombok.NonNull;
 import org.hibernate.annotations.SQLDelete;

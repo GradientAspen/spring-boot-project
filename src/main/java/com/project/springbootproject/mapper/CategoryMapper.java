@@ -1,7 +1,7 @@
 package com.project.springbootproject.mapper;
 
 import com.project.springbootproject.config.MapperConfig;
-import com.project.springbootproject.dto.categoryDto.CategoryDto;
+import com.project.springbootproject.dto.categorydto.CategoryDto;
 import com.project.springbootproject.model.Category;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
@@ -12,7 +12,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface CategoryMapper {
     CategoryDto toDto(Category category);
 
-    Category toEntity(CategoryDto categoryDTO);
+    Category toEntity(CategoryDto categoryDto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateCategoryFromCategoryDto(CategoryDto categoryDto, @MappingTarget Category category);

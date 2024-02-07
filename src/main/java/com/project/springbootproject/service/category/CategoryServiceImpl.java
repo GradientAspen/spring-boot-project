@@ -1,17 +1,16 @@
 package com.project.springbootproject.service.category;
 
-import com.project.springbootproject.dto.categoryDto.CategoryDto;
+import com.project.springbootproject.dto.categorydto.CategoryDto;
 import com.project.springbootproject.exception.EntityNotFoundException;
 import com.project.springbootproject.mapper.CategoryMapper;
 import com.project.springbootproject.model.Category;
 import com.project.springbootproject.repository.category.CategoryRepository;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
