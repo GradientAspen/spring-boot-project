@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: addCategoryBooksColumn
+      author: Vasyliev
+      changes:
+        - addColumn:
+            tableName: books
+            columns:
+              - column:
+                  name: categories
+                  type: VARCHAR(255)
