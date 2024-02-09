@@ -20,7 +20,7 @@ import org.hibernate.annotations.Where;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-@SQLDelete(sql = "UPDATE books SET is_deleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE users SET is_deleted = true WHERE id=?")
 @Where(clause = "is_deleted=false")
 @Entity
 @Data
