@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: createShoppingCartsTable
+      author: Vasyliev
+      changes:
+        - createTable:
+            tableName: shoppingcarts
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_deleted
+                  type: BOOLEAN
+                  defaultValue: false
+                  constraints:
+                    nullable: false
