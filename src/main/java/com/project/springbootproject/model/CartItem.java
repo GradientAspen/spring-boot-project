@@ -27,4 +27,8 @@ public class CartItem {
     private Book book;
     @NonNull
     private int quantity;
+
+    public CartItem() {
+
+    }
 }

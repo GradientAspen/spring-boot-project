@@ -33,4 +33,8 @@ public class ShoppingCart {
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL)
     private Set<CartItem> cartItems;
     private boolean isDeleted = false;
+
+    public ShoppingCart() {
+
+    }
 }
