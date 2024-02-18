@@ -13,7 +13,4 @@ public interface CartItemMapper {
 
     CartItem toModel(CartItemDto cartItemDto);
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateCartItemFromCartItemDto(CartItemDto cartItemDto, CartItem cartItemUpdate);
-
 }

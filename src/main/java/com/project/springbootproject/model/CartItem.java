@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 
 @Entity
@@ -20,10 +21,12 @@ public class CartItem {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "shoppingcart_id")
+    @EqualsAndHashCode.Exclude
     private ShoppingCart shoppingCart;
     @ManyToOne
     @JoinColumn(name = "book_id")
     @NonNull
+    @EqualsAndHashCode.Exclude
     private Book book;
     @NonNull
     private int quantity;

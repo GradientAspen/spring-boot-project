@@ -1,17 +1,17 @@
 package com.project.springbootproject.service.shoppingcart;
 
+import com.project.springbootproject.dto.cartitemdto.CartItemDto;
 import com.project.springbootproject.dto.shoppingcartdto.ShoppingCartDto;
-
-import java.util.List;
+import com.project.springbootproject.model.User;
 
 public interface ShoppingCartService {
-    List<ShoppingCartDto> findAll();
 
-    ShoppingCartDto getById(Long id);
+    ShoppingCartDto getByUserId(Long id);
 
-    ShoppingCartDto save(ShoppingCartDto shoppingCartDto);
+    ShoppingCartDto addToCart(CartItemDto cartItemDto, Long userId);
 
-    void update(Long id, ShoppingCartDto shoppingCartDto);
+    ShoppingCartDto updateCartItem(CartItemDto cartItemDto); //fix params
 
-    void deleteBiID(Long id);
+    void deleteByIdCartItem(Long id); // fix params check for Users
+
 }

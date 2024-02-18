@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -29,8 +30,10 @@ public class ShoppingCart {
     @NonNull
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @EqualsAndHashCode.Exclude
     private User user;
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
     private Set<CartItem> cartItems;
     private boolean isDeleted = false;
 
