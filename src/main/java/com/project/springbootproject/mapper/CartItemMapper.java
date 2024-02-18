@@ -13,5 +13,4 @@ public interface CartItemMapper {
     CartItem toModel(CartItemDto cartItemDto);
 
     CartItemQuantityDto toQuantityDto(CartItem cartItem);
-
 }

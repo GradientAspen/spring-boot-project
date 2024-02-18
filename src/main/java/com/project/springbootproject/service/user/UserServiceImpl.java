@@ -33,21 +33,31 @@ public class UserServiceImpl implements UserService {
             throw new RegistrationException("Can not register user");
         }
 
-        final User user = new User();
+        User user = createUserFromRequest(userRequestDto);
+        ShoppingCart shoppingCart = createShoppingCartForUser(user);
+        userRepository.save(user);
+        shoppingCartRepository.save(shoppingCart);
+        return userMapper.toUserDto(user);
+    }
+
+    private User createUserFromRequest(UserRequestDto userRequestDto) {
+        User user = new User();
         user.setEmail(userRequestDto.getEmail());
         user.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
         user.setFirstName(userRequestDto.getFirstName());
         user.setLastName(userRequestDto.getLastName());
         user.setShippingAddress(userRequestDto.getShippingAddress());
-        final Role userRole = roleRepository.findByRole(Role.RoleName.USER).orElseThrow(
-                () -> new IllegalStateException("Role User not found"));
+        Role userRole = roleRepository.findByRole(Role.RoleName.USER)
+                .orElseThrow(() -> new IllegalStateException("Role User not found"));
         user.setRoles(Collections.singleton(userRole));
-        final User saveUser = userRepository.save(user);
-        final ShoppingCart shoppingCart = new ShoppingCart();
+        return user;
+    }
+
+    private ShoppingCart createShoppingCartForUser(User user) {
+        ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(user);
         shoppingCart.setCartItems(new HashSet<>());
-        shoppingCartRepository.save(shoppingCart);
-        return userMapper.toUserDto(saveUser);
+        return shoppingCart;
     }
 
 }

@@ -30,13 +30,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCartDto getByUserId(Long id) {
-        ShoppingCart shoppingCart = shoppingCartRepository.findByUser_Id(id);
+        ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(id);
         return shoppingCartMapper.toShoppingCartDto(shoppingCart);
     }
 
     @Override
     public ShoppingCartDto addToCart(CartItemDto cartItemDto, Long userId) {
-        ShoppingCart shoppingCart = shoppingCartRepository.findByUser_Id(userId);
+        ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(userId);
         if (shoppingCart == null) {
             shoppingCart.setCartItems(new HashSet<>());
         }
@@ -52,15 +52,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public CartItemQuantityDto updateCartItem(Long cartItemId, CartItemQuantityDto quantityDto) {
         Optional<CartItem> cartItemOptional = cartItemRepository.findById(cartItemId);
-        if (cartItemOptional.isPresent()) {
-            CartItem cartItem = cartItemOptional.get();
-            cartItem.setQuantity(quantityDto.getQuantity());
-            cartItemRepository.save(cartItem);
-            return cartItemMapper.toQuantityDto(cartItem);
-            //shoppingCartMapper.toShoppingCartDto(cartItem.getShoppingCart());
-        } else {
+        if (!cartItemOptional.isPresent()) {
             throw new EntityNotFoundException("CartItem with id " + cartItemId + " not found");
         }
+        CartItem cartItem = cartItemOptional.get();
+        cartItem.setQuantity(quantityDto.getQuantity());
+        cartItemRepository.save(cartItem);
+        return cartItemMapper.toQuantityDto(cartItem);
     }
 
     @Override

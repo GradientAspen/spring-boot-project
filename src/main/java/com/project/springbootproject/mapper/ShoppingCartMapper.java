@@ -14,7 +14,6 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(config = MapperConfig.class)
 public interface ShoppingCartMapper {
-
     @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "cartItemIds", expression =
             "java(mapCartItemsToIds(shoppingCart.getCartItems()))")
@@ -33,5 +32,4 @@ public interface ShoppingCartMapper {
                 .map(CartItem::getId)
                 .collect(Collectors.toSet());
     }
-
 }

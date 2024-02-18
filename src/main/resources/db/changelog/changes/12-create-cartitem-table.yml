@@ -4,7 +4,7 @@ databaseChangeLog:
       author: Vasyliev
       changes:
         - createTable:
-            tableName: cartitems
+            tableName: cart_items
             columns:
               - column:
                   name: id

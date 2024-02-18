@@ -13,7 +13,7 @@ import lombok.NonNull;
 
 @Entity
 @Data
-@Table(name = "cartitems")
+@Table(name = "cart_items")
 public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

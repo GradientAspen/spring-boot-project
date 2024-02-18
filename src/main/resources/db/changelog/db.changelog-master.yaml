@@ -23,3 +23,4 @@ databaseChangeLog:
       file: db/changelog/changes/11-create-shoppingcarts-table.yml
   - include:
       file: db/changelog/changes/12-create-cartitem-table.yml
+
