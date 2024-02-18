@@ -1,8 +1,8 @@
 package com.project.springbootproject.service.shoppingcart;
 
 import com.project.springbootproject.dto.cartitemdto.CartItemDto;
+import com.project.springbootproject.dto.cartitemdto.CartItemQuantityDto;
 import com.project.springbootproject.dto.shoppingcartdto.ShoppingCartDto;
-import com.project.springbootproject.model.User;
 
 public interface ShoppingCartService {
 
@@ -10,8 +10,8 @@ public interface ShoppingCartService {
 
     ShoppingCartDto addToCart(CartItemDto cartItemDto, Long userId);
 
-    ShoppingCartDto updateCartItem(CartItemDto cartItemDto); //fix params
+    CartItemQuantityDto updateCartItem(Long cartIdemId, CartItemQuantityDto quantityDto);
 
-    void deleteByIdCartItem(Long id); // fix params check for Users
+    void deleteByIdCartItem(Long id);
 
 }

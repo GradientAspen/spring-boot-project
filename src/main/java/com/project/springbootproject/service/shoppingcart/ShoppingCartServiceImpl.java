@@ -1,7 +1,9 @@
 package com.project.springbootproject.service.shoppingcart;
 
 import com.project.springbootproject.dto.cartitemdto.CartItemDto;
+import com.project.springbootproject.dto.cartitemdto.CartItemQuantityDto;
 import com.project.springbootproject.dto.shoppingcartdto.ShoppingCartDto;
+import com.project.springbootproject.exception.EntityNotFoundException;
 import com.project.springbootproject.mapper.CartItemMapper;
 import com.project.springbootproject.mapper.ShoppingCartMapper;
 import com.project.springbootproject.model.Book;
@@ -11,11 +13,10 @@ import com.project.springbootproject.repository.book.BookRepository;
 import com.project.springbootproject.repository.cartitem.CartItemRepository;
 import com.project.springbootproject.repository.shoppingcart.ShoppingCartRepository;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
 import java.util.HashSet;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
@@ -49,15 +50,17 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public ShoppingCartDto updateCartItem(CartItemDto cartItemDto) {
-        Optional<CartItem> cartItem = cartItemRepository.findById(cartItemDto.getId());
-        if (cartItem.isPresent()) {
-            CartItem item = cartItem.get();
-            item.setQuantity(cartItemDto.getQuantity());
-            cartItemRepository.save(item);
-            return shoppingCartMapper.toShoppingCartDto(item.getShoppingCart());
+    public CartItemQuantityDto updateCartItem(Long cartItemId, CartItemQuantityDto quantityDto) {
+        Optional<CartItem> cartItemOptional = cartItemRepository.findById(cartItemId);
+        if (cartItemOptional.isPresent()) {
+            CartItem cartItem = cartItemOptional.get();
+            cartItem.setQuantity(quantityDto.getQuantity());
+            cartItemRepository.save(cartItem);
+            return cartItemMapper.toQuantityDto(cartItem);
+            //shoppingCartMapper.toShoppingCartDto(cartItem.getShoppingCart());
+        } else {
+            throw new EntityNotFoundException("CartItem with id " + cartItemId + " not found");
         }
-        return null;
     }
 
     @Override
