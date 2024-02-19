@@ -19,3 +19,11 @@ databaseChangeLog:
       file: db/changelog/changes/09-add-category-for-books.yml
   - include:
       file: db/changelog/changes/10-create-books-categories-table.yml
+  - include:
+      file: db/changelog/changes/11-create-shoppingcarts-table.yml
+  - include:
+      file: db/changelog/changes/12-create-cartitem-table.yml
+  - include:
+      file: db/changelog/changes/13-add-column-isdelete-cartitem-table.yml
+  - include:
+      file: db/changelog/changes/14-change-columnname-cartitem-table.yml

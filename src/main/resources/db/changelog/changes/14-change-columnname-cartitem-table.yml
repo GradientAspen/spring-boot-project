@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - changeSet:
+      id: update_column_name
+      author: Vasyliev
+      changes:
+        - sql:
+            sql: ALTER TABLE cart_items RENAME COLUMN shoppingcart_id TO shopping_cart_id
