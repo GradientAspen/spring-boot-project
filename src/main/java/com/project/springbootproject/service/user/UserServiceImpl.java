@@ -59,5 +59,4 @@ public class UserServiceImpl implements UserService {
         shoppingCart.setCartItems(new HashSet<>());
         return shoppingCart;
     }
-
 }

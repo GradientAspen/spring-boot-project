@@ -4,6 +4,7 @@ import com.project.springbootproject.dto.cartitemdto.CartItemDto;
 import com.project.springbootproject.dto.cartitemdto.CartItemQuantityDto;
 import com.project.springbootproject.dto.shoppingcartdto.ShoppingCartDto;
 import com.project.springbootproject.exception.EntityNotFoundException;
+import com.project.springbootproject.exception.ShoppingCartNotFoundException;
 import com.project.springbootproject.mapper.CartItemMapper;
 import com.project.springbootproject.mapper.ShoppingCartMapper;
 import com.project.springbootproject.model.Book;
@@ -13,7 +14,6 @@ import com.project.springbootproject.repository.book.BookRepository;
 import com.project.springbootproject.repository.cartitem.CartItemRepository;
 import com.project.springbootproject.repository.shoppingcart.ShoppingCartRepository;
 import jakarta.transaction.Transactional;
-import java.util.HashSet;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,7 +38,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public ShoppingCartDto addToCart(CartItemDto cartItemDto, Long userId) {
         ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(userId);
         if (shoppingCart == null) {
-            shoppingCart.setCartItems(new HashSet<>());
+            throw new ShoppingCartNotFoundException("Shopping cart not found for user with id: "
+                    + userId);
         }
         CartItem cartItem = cartItemMapper.toModel(cartItemDto);
         Book book = bookRepository.getById(cartItemDto.getBookId());

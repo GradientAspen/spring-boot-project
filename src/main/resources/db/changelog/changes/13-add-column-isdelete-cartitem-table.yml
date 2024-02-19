@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: addIsDeletedToCartItemsTable
+      author: Vasuliev
+      changes:
+        - addColumn:
+            tableName: cart_items
+            columns:
+              - column:
+                  name: is_deleted
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
