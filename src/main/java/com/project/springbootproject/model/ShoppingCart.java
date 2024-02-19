@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -17,13 +18,9 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Data
-
 @Entity
-
 @Table(name = "shopping_carts")
-
 @SQLDelete(sql = "UPDATE shopping_carts SET is_deleted = TRUE WHERE id = ?")
-
 @SQLRestriction("is_deleted = FALSE")
 
 public class ShoppingCart {
@@ -32,6 +29,7 @@ public class ShoppingCart {
     private Long id;
 
     @OneToOne
+    @MapsId
     @JoinColumn(name = "user_id")
     @ToStringExclude
     @EqualsAndHashCode.Exclude
@@ -44,5 +42,4 @@ public class ShoppingCart {
 
     @Column(nullable = false)
     private boolean isDeleted = false;
-
 }
