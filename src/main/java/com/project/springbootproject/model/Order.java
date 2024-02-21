@@ -2,6 +2,8 @@ package com.project.springbootproject.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,13 +30,14 @@ public class Order {
 
     @ToStringExclude
     @EqualsAndHashCode.Exclude
-    @Column(nullable = false)
+    //@Column(nullable = false)
     @ManyToOne
     @MapsId
     @JoinColumn(name = "user_id")
     private User user;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     @Column(nullable = false)

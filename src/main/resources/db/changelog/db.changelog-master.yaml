@@ -27,3 +27,7 @@ databaseChangeLog:
       file: db/changelog/changes/13-add-column-isdelete-cartitem-table.yml
   - include:
       file: db/changelog/changes/14-change-columnname-cartitem-table.yml
+  - include:
+      file: db/changelog/changes/15-create-order-table.yml
+  - include:
+      file: db/changelog/changes/16-create-orderitem-table.yml
