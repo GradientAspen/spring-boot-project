@@ -23,7 +23,7 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //@Column(nullable = false)
+
     @ToStringExclude
     @EqualsAndHashCode.Exclude
     @ManyToOne
@@ -32,7 +32,6 @@ public class OrderItem {
 
     @ToStringExclude
     @EqualsAndHashCode.Exclude
-    //@Column(nullable = false)
     @ManyToOne
     @MapsId
     @JoinColumn(name = "book_id")

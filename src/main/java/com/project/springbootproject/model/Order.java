@@ -30,7 +30,6 @@ public class Order {
 
     @ToStringExclude
     @EqualsAndHashCode.Exclude
-    //@Column(nullable = false)
     @ManyToOne
     @MapsId
     @JoinColumn(name = "user_id")
