@@ -30,7 +30,6 @@ public class ShoppingCart {
     private Long id;
 
     @OneToOne
-    //@MapsId was problem with ShoppingCartService getByUserId method
     @JoinColumn(name = "user_id")
     @ToStringExclude
     @EqualsAndHashCode.Exclude
