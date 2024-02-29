@@ -1,10 +1,8 @@
 package com.project.springbootproject.service.order;
 
-import com.project.springbootproject.dto.cartitemdto.CartItemDto;
 import com.project.springbootproject.dto.order.OrderDto;
 import com.project.springbootproject.dto.orderitemdto.OrderItemResponseDto;
 import com.project.springbootproject.model.Order;
-
 import java.util.List;
 import java.util.Set;
 

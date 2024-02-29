@@ -7,13 +7,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.builder.ToStringExclude;
-
-import java.math.BigDecimal;
 
 @Entity
 @Data
@@ -22,7 +20,6 @@ public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
 
     @ToStringExclude
     @EqualsAndHashCode.Exclude
@@ -33,7 +30,6 @@ public class OrderItem {
     @ToStringExclude
     @EqualsAndHashCode.Exclude
     @ManyToOne
-    //@MapsId
     @JoinColumn(name = "book_id")
     private Book book;
 

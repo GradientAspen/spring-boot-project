@@ -10,16 +10,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.apache.commons.lang3.builder.ToStringExclude;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.apache.commons.lang3.builder.ToStringExclude;
 
 @Entity
 @Data
@@ -32,7 +30,6 @@ public class Order {
     @ToStringExclude
     @EqualsAndHashCode.Exclude
     @ManyToOne
-    //@MapsId
     @JoinColumn(name = "user_id")
     private User user;
 

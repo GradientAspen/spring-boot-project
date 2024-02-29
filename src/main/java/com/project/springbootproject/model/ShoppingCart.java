@@ -8,7 +8,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -37,7 +36,8 @@ public class ShoppingCart {
     @EqualsAndHashCode.Exclude
     private User user;
 
-    @OneToMany(mappedBy = "shoppingCart", fetch = FetchType.EAGER, cascade = CascadeType.ALL) //orphanRemoval = true del, add cascade
+    @OneToMany(mappedBy = "shoppingCart", fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL)
     @ToStringExclude
     @EqualsAndHashCode.Exclude
     private Set<CartItem> cartItems;

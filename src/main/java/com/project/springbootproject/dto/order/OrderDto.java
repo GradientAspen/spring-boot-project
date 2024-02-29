@@ -2,11 +2,10 @@ package com.project.springbootproject.dto.order;
 
 import com.project.springbootproject.dto.orderitemdto.OrderItemResponseDto;
 import com.project.springbootproject.model.Order;
-import lombok.Data;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
+import lombok.Data;
 
 @Data
 public class OrderDto {

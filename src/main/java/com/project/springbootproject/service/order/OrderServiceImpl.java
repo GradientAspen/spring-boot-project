@@ -13,9 +13,6 @@ import com.project.springbootproject.repository.order.OrderRepository;
 import com.project.springbootproject.repository.orderitem.OrderItemRepository;
 import com.project.springbootproject.repository.shoppingcart.ShoppingCartRepository;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -23,6 +20,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -54,7 +53,8 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderOptional.get();
         Set<OrderItemResponseDto> orderItemResponseDtos = new HashSet<>();
         for (OrderItem orderItem : order.getOrderItems()) {
-            OrderItemResponseDto orderItemResponseDto = orderMapper.orderItemToOrderItemResponseDto(orderItem);
+            OrderItemResponseDto orderItemResponseDto =
+                    orderMapper.orderItemToOrderItemResponseDto(orderItem);
             orderItemResponseDtos.add(orderItemResponseDto);
         }
         return orderItemResponseDtos;
@@ -65,14 +65,10 @@ public class OrderServiceImpl implements OrderService {
         ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(userId);
         Order order = new Order();
         order.setStatus(Order.Status.PENDING);
-
-        //added new logic and fixed some problem
         order.setShippingAddress(shoppingAddress);
         order.setTotal(BigDecimal.valueOf(shoppingCart.getCartItems()
                 .stream()
                 .mapToInt(CartItem::getQuantity).sum()));
-
-
         order.setUser(shoppingCart.getUser());
         order.setOrderDate(LocalDateTime.now());
         Set<OrderItem> orderItemList = new HashSet<>();
@@ -87,8 +83,6 @@ public class OrderServiceImpl implements OrderService {
         });
         order.setOrderItems(orderItemList);
         orderRepository.save(order);
-        //shoppingCart.setCartItems(new HashSet<>());
-        //shoppingCart.getCartItems().clear();
 
         shoppingCartRepository.save(shoppingCart);
         cartItemRepository.deleteCartItemsFromDb(shoppingCart.getId());
@@ -102,7 +96,6 @@ public class OrderServiceImpl implements OrderService {
                 .stream()
                 .map(orderMapper::toDto)
                 .collect(Collectors.toList());
-
     }
 
     @Override
@@ -111,12 +104,11 @@ public class OrderServiceImpl implements OrderService {
         return orderItemList.stream()
                 .map(orderMapper::orderItemToOrderItemResponseDto)
                 .collect(Collectors.toList());
-
     }
 
     @Override
     public OrderItemResponseDto getOrderItemForSpecificOrder(Long orderId, Long orderItemId) {
-        OrderItem byIdAndOrder_id = orderItemRepository.findByOrder_IdAndId(orderId, orderItemId);
-        return orderMapper.orderItemToOrderItemResponseDto(byIdAndOrder_id);
+        OrderItem byIdAndOrderId = orderItemRepository.findByOrder_IdAndId(orderId, orderItemId);
+        return orderMapper.orderItemToOrderItemResponseDto(byIdAndOrderId);
     }
 }

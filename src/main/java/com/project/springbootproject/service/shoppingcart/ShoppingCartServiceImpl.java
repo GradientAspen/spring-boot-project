@@ -14,10 +14,9 @@ import com.project.springbootproject.repository.book.BookRepository;
 import com.project.springbootproject.repository.cartitem.CartItemRepository;
 import com.project.springbootproject.repository.shoppingcart.ShoppingCartRepository;
 import jakarta.transaction.Transactional;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -46,16 +45,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Book book = bookRepository.getById(cartItemDto.getBookId());
         cartItem.setBook(book);
         cartItem.setShoppingCart(shoppingCart);
-
-        //added for correct work with cartItemId
-        //CartItem savedCartItem = cartItemRepository.save(cartItem);
-        //cartItem.setId(savedCartItem.getId());
-
         shoppingCart.getCartItems().add(cartItem);
         shoppingCartRepository.save(shoppingCart);
         return shoppingCartMapper.toShoppingCartDto(shoppingCart);
     }
-
 
     @Override
     public CartItemQuantityDto updateCartItem(Long cartItemId, CartItemQuantityDto quantityDto) {

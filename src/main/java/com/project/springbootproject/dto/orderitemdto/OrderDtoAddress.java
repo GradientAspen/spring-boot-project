@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class OrderDtoAddress {
-    String address;
+    private String address;
 }

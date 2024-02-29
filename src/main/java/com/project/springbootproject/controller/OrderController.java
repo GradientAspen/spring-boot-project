@@ -8,6 +8,8 @@ import com.project.springbootproject.model.User;
 import com.project.springbootproject.service.order.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.security.Principal;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +21,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import java.security.Principal;
-import java.util.List;
 
 @Tag(name = "Order Controller",
         description = "Endpoint for managing Orders")
@@ -33,16 +33,10 @@ public class OrderController {
     @PatchMapping("/{id}")
     @Operation(summary = "Update order Status",
             description = "Update information about order Status for specific Order")
-    public OrderDto updateOrderStatus(@PathVariable Long id, @RequestBody OrderDtoStatus orderDtoStatus) {
+    public OrderDto updateOrderStatus(@PathVariable Long id,
+                                      @RequestBody OrderDtoStatus orderDtoStatus) {
         return orderService.updateOrderStatus(id, orderDtoStatus.getStatus());
     }
-
-    //  @PostMapping
-    //  public OrderDto createOrder(@RequestBody OrderDtoAddress orderDtoAddress, Principal principal){
-    //      User user = (User) ((UsernamePasswordAuthenticationToken) principal)
-    //              .getPrincipal();
-    //      return orderService.createOrder(orderDtoAddress.getAddress(),user.getId());
-    //  }
 
     @PostMapping
     @Operation(summary = "Creat new Order",
@@ -52,13 +46,6 @@ public class OrderController {
                 .getPrincipal();
         return orderService.createOrder(orderDtoAddress.getAddress(), user.getId());
     }
-
-    //  @GetMapping("{orderId}/items")
-    //  public Set<OrderItemResponseDto> getAllOrderItem(@PathVariable Long orderId, Principal principal) {
-    //      User user = (User) ((UsernamePasswordAuthenticationToken) principal)
-    //              .getPrincipal();
-    //      return orderService.getAllOrderItemsForOrder(orderId);
-    //  }
 
     @GetMapping
     @Operation(summary = "Get all user's orders",
@@ -73,7 +60,8 @@ public class OrderController {
     @GetMapping("/{orderId}/items")
     @Operation(summary = "Get cartItem for order",
             description = "Get all cartItem for specific order")
-    public ResponseEntity<List<OrderItemResponseDto>> getOrderItemsForOrder(@PathVariable Long orderId) {
+    public ResponseEntity<List<OrderItemResponseDto>> getOrderItemsForOrder(
+            @PathVariable Long orderId) {
         List<OrderItemResponseDto> orderItems = orderService.getAllCartItemsForOrder(orderId);
         return ResponseEntity.ok(orderItems);
     }
