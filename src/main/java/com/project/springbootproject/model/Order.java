@@ -1,5 +1,6 @@
 package com.project.springbootproject.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -31,7 +32,7 @@ public class Order {
     @ToStringExclude
     @EqualsAndHashCode.Exclude
     @ManyToOne
-    @MapsId
+    //@MapsId
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -50,7 +51,7 @@ public class Order {
 
     @ToStringExclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private Set<OrderItem> orderItems;
 
     public enum Status {

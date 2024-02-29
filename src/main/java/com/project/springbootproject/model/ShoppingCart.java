@@ -1,7 +1,9 @@
 package com.project.springbootproject.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,13 +31,13 @@ public class ShoppingCart {
     private Long id;
 
     @OneToOne
-    @MapsId
+    //@MapsId was problem with ShoppingCartService getByUserId method
     @JoinColumn(name = "user_id")
     @ToStringExclude
     @EqualsAndHashCode.Exclude
     private User user;
 
-    @OneToMany(mappedBy = "shoppingCart", orphanRemoval = true)
+    @OneToMany(mappedBy = "shoppingCart", fetch = FetchType.EAGER, cascade = CascadeType.ALL) //orphanRemoval = true del, add cascade
     @ToStringExclude
     @EqualsAndHashCode.Exclude
     private Set<CartItem> cartItems;

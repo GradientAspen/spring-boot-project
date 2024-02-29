@@ -2,15 +2,21 @@ package com.project.springbootproject.service.order;
 
 import com.project.springbootproject.dto.order.OrderDto;
 import com.project.springbootproject.dto.orderitemdto.OrderItemResponseDto;
+import com.project.springbootproject.exception.EntityNotFoundException;
 import com.project.springbootproject.mapper.OrderMapper;
+import com.project.springbootproject.model.CartItem;
 import com.project.springbootproject.model.Order;
 import com.project.springbootproject.model.OrderItem;
 import com.project.springbootproject.model.ShoppingCart;
+import com.project.springbootproject.repository.cartitem.CartItemRepository;
 import com.project.springbootproject.repository.order.OrderRepository;
+import com.project.springbootproject.repository.orderitem.OrderItemRepository;
 import com.project.springbootproject.repository.shoppingcart.ShoppingCartRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -20,8 +26,11 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemRepository;
+    private final CartItemRepository cartItemRepository;
     private final OrderMapper orderMapper;
     private final ShoppingCartRepository shoppingCartRepository;
 
@@ -36,19 +45,39 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderItemResponseDto getAllOrderItems(OrderDto orderDto) {
-        return null;
+    public Set<OrderItemResponseDto> getAllOrderItemsForOrder(Long orderId) {
+        Optional<Order> orderOptional = orderRepository.findById(orderId);
+        if (orderOptional.isEmpty()) {
+            throw new EntityNotFoundException("Order with id " + orderId + " not found");
+        }
+
+        Order order = orderOptional.get();
+        Set<OrderItemResponseDto> orderItemResponseDtos = new HashSet<>();
+        for (OrderItem orderItem : order.getOrderItems()) {
+            OrderItemResponseDto orderItemResponseDto = orderMapper.orderItemToOrderItemResponseDto(orderItem);
+            orderItemResponseDtos.add(orderItemResponseDto);
+        }
+        return orderItemResponseDtos;
     }
 
     @Override
-    public OrderDto creatOrder(String shoppingAddress, Long userId) {
-        ShoppingCart byUserId = shoppingCartRepository.findByUserId(userId);
+    public OrderDto createOrder(String shoppingAddress, Long userId) {
+        ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(userId);
         Order order = new Order();
         order.setStatus(Order.Status.PENDING);
-        order.setUser(byUserId.getUser());
+
+        //added new logic and fixed some problem
+        order.setShippingAddress(shoppingAddress);
+        order.setTotal(BigDecimal.valueOf(shoppingCart.getCartItems()
+                .stream()
+                .mapToInt(CartItem::getQuantity).sum()));
+
+
+        order.setUser(shoppingCart.getUser());
         order.setOrderDate(LocalDateTime.now());
         Set<OrderItem> orderItemList = new HashSet<>();
-        byUserId.getCartItems().stream().forEach(cartItem -> {
+
+        shoppingCart.getCartItems().stream().forEach(cartItem -> {
             OrderItem orderItem = new OrderItem();
             orderItem.setBook(cartItem.getBook());
             orderItem.setPrice(cartItem.getBook().getPrice());
@@ -58,19 +87,36 @@ public class OrderServiceImpl implements OrderService {
         });
         order.setOrderItems(orderItemList);
         orderRepository.save(order);
-        byUserId.setCartItems(new HashSet<>());
-        shoppingCartRepository.save(byUserId);
+        //shoppingCart.setCartItems(new HashSet<>());
+        //shoppingCart.getCartItems().clear();
+
+        shoppingCartRepository.save(shoppingCart);
+        cartItemRepository.deleteCartItemsFromDb(shoppingCart.getId());
+
         return orderMapper.toDto(order);
     }
 
     @Override
-    public List<OrderDto> getAllUsersOrders(Long userId) {
-        return orderRepository.findAll()
+    public List<OrderDto> getAllUserOrders(Long userId) {
+        return orderRepository.findAllByUserId(userId)
                 .stream()
                 .map(orderMapper::toDto)
                 .collect(Collectors.toList());
 
     }
 
+    @Override
+    public List<OrderItemResponseDto> getAllCartItemsForOrder(Long orderId) {
+        List<OrderItem> orderItemList = orderItemRepository.findByOrder_Id(orderId);
+        return orderItemList.stream()
+                .map(orderMapper::orderItemToOrderItemResponseDto)
+                .collect(Collectors.toList());
 
+    }
+
+    @Override
+    public OrderItemResponseDto getOrderItemForSpecificOrder(Long orderId, Long orderItemId) {
+        OrderItem byIdAndOrder_id = orderItemRepository.findByOrder_IdAndId(orderId, orderItemId);
+        return orderMapper.orderItemToOrderItemResponseDto(byIdAndOrder_id);
+    }
 }

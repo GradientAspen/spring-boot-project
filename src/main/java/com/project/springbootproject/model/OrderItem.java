@@ -33,7 +33,7 @@ public class OrderItem {
     @ToStringExclude
     @EqualsAndHashCode.Exclude
     @ManyToOne
-    @MapsId
+    //@MapsId
     @JoinColumn(name = "book_id")
     private Book book;
 
