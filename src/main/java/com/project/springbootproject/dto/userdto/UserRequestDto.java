@@ -14,7 +14,6 @@ public class UserRequestDto {
     private String email;
     @NotNull
     @Length(min = 8, max = 20)
-    //@FieldMatch
     private String password;
     @NotNull
     @Length(min = 8, max = 20)
