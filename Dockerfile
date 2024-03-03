@@ -12,5 +12,6 @@ COPY --from=builder application/dependencies/ ./
 COPY --from=builder application/spring-boot-loader/ ./
 COPY --from=builder application/snapshot-dependencies/ ./
 COPY --from=builder application/application/ ./
+ENV JAVA_TOOL_OPTIONS "-agentlib:jdwp=transport=dt_socket,address=*:8000,server=y,suspend=n"
 ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
 EXPOSE 8080

@@ -5,10 +5,11 @@ services:
     build: .
     ports:
       - "8080:8080"
+      - "8000:8000"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/bookDb?serverTimeZone=UTC
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=13572468TRee@@
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_ROOT_USER}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - SPRING_DATASOURCE_DRIVER-CLASS-NAME=com.mysql.cj.jdbc.Driver
       - SPRING_JPA_HIBERNATE_DDL-AUTO=validate
       - SPRING_JPA_SHOW-SQL=true
@@ -16,7 +17,7 @@ services:
       - SPRING_JACKSON_DESERIALIZATION_FAIL-ON-UNKNOWN-PROPERTIES=true
       - SERVER_SERVLET_CONTEXT-PATH=/api
       - JWT_EXPIRATION=300000
-      - JWT_SECRET=secretiveness123456456789878787878787
+      - JWT_SECRET=${JWT_SECRET}
 
   mysql:
     image: mysql:latest
@@ -24,5 +25,5 @@ services:
     ports:
       - "3307:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: 13572468TRee@@
-      MYSQL_DATABASE: bookDb
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
