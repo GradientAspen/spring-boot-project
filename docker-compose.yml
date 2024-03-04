@@ -5,7 +5,7 @@ services:
     build: .
     ports:
       - "8080:8080"
-      - "8000:8000"
+      - "8983:8983"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/bookDb?serverTimeZone=UTC
       - SPRING_DATASOURCE_USERNAME=${MYSQL_ROOT_USER}
@@ -24,6 +24,9 @@ services:
     restart: always
     ports:
       - "3307:3306"
+      - "8984:8983"
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ROOT_NAME: ${MYSQL_ROOT_USER}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8983"
