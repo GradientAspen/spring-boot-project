@@ -30,7 +30,7 @@ public class ShoppingCart {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id") // fixed del this AN and add mapsId
     @ToStringExclude
     @EqualsAndHashCode.Exclude
     private User user;

@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  myapp:
+    build: .
+    ports:
+      - "8080:8080"
+      - "8983:8983"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/bookDb?serverTimeZone=UTC
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_ROOT_USER}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - SPRING_DATASOURCE_DRIVER-CLASS-NAME=com.mysql.cj.jdbc.Driver
+      - SPRING_JPA_HIBERNATE_DDL-AUTO=validate
+      - SPRING_JPA_SHOW-SQL=true
+      - SPRING_JPA_OPEN-IN-VIEW=false
+      - SPRING_JACKSON_DESERIALIZATION_FAIL-ON-UNKNOWN-PROPERTIES=true
+      - SERVER_SERVLET_CONTEXT-PATH=/api
+      - JWT_EXPIRATION=300000
+      - JWT_SECRET=${JWT_SECRET}
+
+  mysql:
+    image: mysql:latest
+    restart: always
+    ports:
+      - "3307:3306"
+      - "8984:8983"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ROOT_NAME: ${MYSQL_ROOT_USER}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8983"
