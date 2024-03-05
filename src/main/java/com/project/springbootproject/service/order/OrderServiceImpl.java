@@ -85,7 +85,8 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(order);
 
         shoppingCartRepository.save(shoppingCart);
-        cartItemRepository.deleteCartItemsFromDb(shoppingCart.getId());
+        cartItemRepository.deleteCartItemsFromDb(shoppingCart.getId()); //work method
+
 
         return orderMapper.toDto(order);
     }
