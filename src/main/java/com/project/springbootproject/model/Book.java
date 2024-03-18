@@ -35,6 +35,7 @@ public class Book {
 
     private String isbn;
 
+    @Column(scale = 0)
     private BigDecimal price;
 
     private String description;

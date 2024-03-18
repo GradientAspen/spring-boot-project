@@ -83,11 +83,8 @@ public class OrderServiceImpl implements OrderService {
         });
         order.setOrderItems(orderItemList);
         orderRepository.save(order);
-
         shoppingCartRepository.save(shoppingCart);
         cartItemRepository.deleteCartItemsFromDb(shoppingCart.getId()); //work method
-
-
         return orderMapper.toDto(order);
     }
 
