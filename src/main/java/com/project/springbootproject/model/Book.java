@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.Set;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 import org.apache.commons.lang3.builder.ToStringExclude;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -24,6 +25,7 @@ import org.hibernate.annotations.SQLRestriction;
 @Entity
 @Data
 @Table(name = "books")
+@Accessors(chain = true)
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
