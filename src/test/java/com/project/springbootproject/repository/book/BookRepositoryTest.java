@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.jdbc.Sql;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -23,16 +24,18 @@ class BookRepositoryTest {
     private CategoryRepository categoryRepository;
 
     @Test
-    @DisplayName("""
-            Find all books by Category id:10
-            """)
+    @Sql(scripts = "classpath:database/category/delete-all-categories.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/books/delete-all-books.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @DisplayName("Find all books by Category")
     void findAllByCategoryId_PositiveCase() {
         Category category = new Category();
         category.setName("Programming");
-        categoryRepository.save(category);
+        category.setDescription("Test2");
+
         Book book = new Book();
-        book.setId(1L);
-        book.setIsbn("isbn12");
+        book.setIsbn("isbn124555");
         book.setTitle("Math");
         book.setPrice(BigDecimal.valueOf(100));
         book.setAuthor("Petrenko Ivan");
@@ -41,8 +44,10 @@ class BookRepositoryTest {
         categories.add(category);
         book.setCategories(categories);
 
-        bookRepository.save(book);
-        List<Book> actual = bookRepository.findAllByCategoriesId(1L);
+        Category categorySave = categoryRepository.save(category);
+        Book save = bookRepository.save(book);
+
+        List<Book> actual = bookRepository.findAllByCategoriesId(categorySave.getId());
         Assertions.assertEquals(1, actual.size());
     }
 }

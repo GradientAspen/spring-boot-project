@@ -1,10 +1,22 @@
 package com.project.springbootproject.service.category;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.project.springbootproject.dto.categorydto.CategoryDto;
 import com.project.springbootproject.exception.EntityNotFoundException;
 import com.project.springbootproject.mapper.CategoryMapper;
 import com.project.springbootproject.model.Category;
 import com.project.springbootproject.repository.category.CategoryRepository;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,18 +24,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.jdbc.Sql;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CategoryServiceImplTest {
@@ -167,14 +167,16 @@ class CategoryServiceImplTest {
         updatedCategory.setId(categoryId);
         updatedCategory.setName("Updated Category");
         when(categoryRepository.findById(categoryId)).thenReturn(Optional.of(existingCategory));
-        doNothing().when(categoryMapper).updateCategoryFromCategoryDto(categoryDto, existingCategory);
+        doNothing().when(categoryMapper)
+                .updateCategoryFromCategoryDto(categoryDto, existingCategory);
 
         // When
         categoryService.update(categoryId, categoryDto);
 
         // Then
         verify(categoryRepository, times(1)).findById(categoryId);
-        verify(categoryMapper, times(1)).updateCategoryFromCategoryDto(categoryDto, existingCategory);
+        verify(categoryMapper, times(1))
+                .updateCategoryFromCategoryDto(categoryDto, existingCategory);
         verify(categoryRepository, times(1)).save(any());
     }
 
@@ -191,7 +193,8 @@ class CategoryServiceImplTest {
         when(categoryRepository.findById(categoryId)).thenReturn(Optional.empty());
 
         // When / Then
-        assertThrows(EntityNotFoundException.class, () -> categoryService.update(categoryId, categoryDto));
+        assertThrows(EntityNotFoundException.class, () -> categoryService
+                .update(categoryId, categoryDto));
     }
 
     @Test

@@ -1,5 +1,16 @@
 package com.project.springbootproject.controller;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertTrue;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.springbootproject.dto.BookDto;
 import com.project.springbootproject.dto.BookRequestDto;
@@ -8,6 +19,12 @@ import com.project.springbootproject.exception.EntityNotFoundException;
 import com.project.springbootproject.model.Book;
 import com.project.springbootproject.repository.book.BookRepository;
 import com.project.springbootproject.service.BookService;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -23,24 +40,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.testcontainers.shaded.org.apache.commons.lang3.builder.EqualsBuilder;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertTrue;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class BookControllerTest {
@@ -104,24 +103,25 @@ class BookControllerTest {
 
     @WithMockUser(username = "adminF@ukr.net", roles = {"ADMIN"})
     @Test
-    @Sql(scripts = "classpath:database/books/add-three-default-books.sql",
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/books/delete-all-books.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("Get all books")
     void getAllBooks_ShouldReturnAllBooks() throws Exception {
 
         //Given
-        List<BookDto> expected = new ArrayList<>();
-        expected.add(new BookDto().setId(1L).setTitle("World")
+        List<BookRequestDto> expected = new ArrayList<>();
+        expected.add(new BookRequestDto().setId(1L).setTitle("World")
                 .setAuthor("Ivan Goncharenko").setIsbn("isbn11")
-                .setPrice(BigDecimal.valueOf(1300.12)).setCategoryIds(Collections.emptySet()));
-        expected.add(new BookDto().setId(2L).setTitle("Oceans")
+                .setPrice(BigDecimal.valueOf(1300.12)).setCategoryIds(Collections.emptyList()));
+        expected.add(new BookRequestDto().setId(2L).setTitle("Oceans")
                 .setAuthor("Ivan Goncharenko").setIsbn("isbn12")
-                .setPrice(BigDecimal.valueOf(1700.12)).setCategoryIds(Collections.emptySet()));
-        expected.add(new BookDto().setId(3L).setTitle("Forests")
+                .setPrice(BigDecimal.valueOf(1700.12)).setCategoryIds(Collections.emptyList()));
+        expected.add(new BookRequestDto().setId(3L).setTitle("Forests")
                 .setAuthor("Semen Petrenko").setIsbn("isbn13")
-                .setPrice(BigDecimal.valueOf(2800.12)).setCategoryIds(Collections.emptySet()));
+                .setPrice(BigDecimal.valueOf(2800.12)).setCategoryIds(Collections.emptyList()));
+        for (BookRequestDto dto:expected) {
+            bookService.save(dto);
+        }
 
         //When
         MvcResult result = mockMvc.perform(get("/books")
@@ -130,7 +130,9 @@ class BookControllerTest {
                 .andReturn();
 
         //Then
-        BookDto[] actual = objectMapper.readValue(result.getResponse().getContentAsByteArray(), BookDto[].class);
+        BookRequestDto[] actual = objectMapper.readValue(result.getResponse()
+                        .getContentAsByteArray(),
+                BookRequestDto[].class);
         Assertions.assertEquals(3, actual.length);
         Assertions.assertEquals(expected, Arrays.stream(actual).toList());
     }
@@ -158,7 +160,8 @@ class BookControllerTest {
                 .andReturn();
 
         // Then
-        BookDto actual = objectMapper.readValue(result.getResponse().getContentAsString(), BookDto.class);
+        BookDto actual = objectMapper.readValue(result.getResponse().getContentAsString(),
+                BookDto.class);
         Assertions.assertEquals(bookRequestDto.getTitle(), actual.getTitle());
         Assertions.assertEquals(bookRequestDto.getAuthor(), actual.getAuthor());
         Assertions.assertEquals(bookRequestDto.getIsbn(), actual.getIsbn());

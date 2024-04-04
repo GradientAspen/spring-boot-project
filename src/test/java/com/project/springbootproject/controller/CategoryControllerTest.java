@@ -1,38 +1,5 @@
 package com.project.springbootproject.controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.springbootproject.dto.BookDto;
-import com.project.springbootproject.dto.BookDtoWithoutCategoryIds;
-import com.project.springbootproject.dto.BookRequestDto;
-import com.project.springbootproject.dto.categorydto.CategoryDto;
-import com.project.springbootproject.exception.EntityNotFoundException;
-import com.project.springbootproject.service.BookService;
-import com.project.springbootproject.service.category.CategoryService;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-import org.testcontainers.shaded.org.apache.commons.lang3.builder.EqualsBuilder;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -42,6 +9,32 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.springbootproject.dto.BookDtoWithoutCategoryIds;
+import com.project.springbootproject.dto.BookRequestDto;
+import com.project.springbootproject.dto.categorydto.CategoryDto;
+import com.project.springbootproject.exception.EntityNotFoundException;
+import com.project.springbootproject.service.BookService;
+import com.project.springbootproject.service.category.CategoryService;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+import org.testcontainers.shaded.org.apache.commons.lang3.builder.EqualsBuilder;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CategoryControllerTest {
@@ -57,7 +50,6 @@ class CategoryControllerTest {
     @Autowired
     private BookService bookService;
 
-
     @BeforeAll
     static void beforeAll(
             @Autowired WebApplicationContext applicationContest
@@ -66,11 +58,7 @@ class CategoryControllerTest {
                 .webAppContextSetup(applicationContest)
                 .apply(springSecurity())
                 .build();
-
     }
-
-
-
 
     @WithMockUser(username = "adminF@ukr.net", roles = {"ADMIN"})
     @Test
@@ -88,7 +76,6 @@ class CategoryControllerTest {
                 .setName(categoryDto.getName())
                 .setDescription(categoryDto.getDescription());
         String jsonRequest = objectMapper.writeValueAsString(categoryDto);
-
 
         // When
         MvcResult result = mockMvc.perform(
@@ -122,7 +109,6 @@ class CategoryControllerTest {
         expectedCategories.add(new CategoryDto()
                 .setName("Category2").setDescription("Description2"));
 
-
         for (CategoryDto dto : expectedCategories) {
             categoryService.save(dto);
         }
@@ -133,13 +119,13 @@ class CategoryControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
         //Then
-        CategoryDto[] actual = objectMapper.readValue(result.getResponse().getContentAsByteArray(), CategoryDto[].class);
+        CategoryDto[] actual = objectMapper.readValue(result.getResponse()
+                .getContentAsByteArray(), CategoryDto[].class);
         Assertions.assertEquals(2, actual.length);
         Assertions.assertEquals("Category1",actual[0].getName());
         Assertions.assertEquals("Category2",actual[1].getName());
         Assertions.assertEquals("Description1",actual[0].getDescription());
         Assertions.assertEquals("Description2",actual[1].getDescription());
-
     }
 
     @WithMockUser(username = "adminF@ukr.net", roles = {"ADMIN"})
@@ -209,7 +195,6 @@ class CategoryControllerTest {
                 .setDescription("Deleted Description");
         CategoryDto save = categoryService.save(categoryToDel);
 
-
         // When
         mockMvc.perform(delete("/category/{id}", save.getId()))
                 .andExpect(status().isNoContent());
@@ -217,8 +202,6 @@ class CategoryControllerTest {
         Assertions.assertThrows(EntityNotFoundException.class, () -> {
             categoryService.getById(save.getId());
         });
-
-
     }
 
     @WithMockUser(username = "adminF@ukr.net", roles = {"ADMIN"})
@@ -237,7 +220,6 @@ class CategoryControllerTest {
                 .setDescription("Test Description");
         categoryService.save(categoryToSave);
 
-
         BookRequestDto bookRequestDto = new BookRequestDto();
         bookRequestDto.setTitle("Sample Book");
         bookRequestDto.setAuthor("Sample Author");
@@ -254,12 +236,10 @@ class CategoryControllerTest {
 
         // Then
         String content = result.getResponse().getContentAsString();
-        List<BookDtoWithoutCategoryIds> books = objectMapper.readValue(content, new TypeReference<>() {});
-
-
+        List<BookDtoWithoutCategoryIds> books = objectMapper.readValue(content,
+                new TypeReference<>() {});
         Assertions.assertNotNull(books);
         Assertions.assertFalse(books.isEmpty());
-
 
         for (BookDtoWithoutCategoryIds book : books) {
             Assertions.assertEquals("Sample Book", book.getTitle());
@@ -267,6 +247,5 @@ class CategoryControllerTest {
             Assertions.assertEquals("1234567890", book.getIsbn());
             Assertions.assertEquals(BigDecimal.valueOf(19.99), book.getPrice());
         }
-
     }
 }

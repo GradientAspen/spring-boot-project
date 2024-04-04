@@ -3,15 +3,12 @@ package com.project.springbootproject.controller;
 import com.project.springbootproject.dto.BookDto;
 import com.project.springbootproject.dto.BookRequestDto;
 import com.project.springbootproject.dto.BookSearchParameters;
-import com.project.springbootproject.model.User;
 import com.project.springbootproject.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-
 import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -36,16 +33,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class BookController {
     private final BookService bookService;
 
-   //   @GetMapping
-   //   public List<BookDto> findAll(Authentication authentication, Pageable pageable) {
-   //       User user = (User) authentication.getPrincipal();
-   //       return bookService.findAll(user.getEmail(), pageable);
-   //   }
-   @GetMapping
-   public List<BookDto> findAll(Authentication authentication, Pageable pageable) {
-       String userEmail = authentication.getName();
-       return bookService.findAll(userEmail, pageable);
-   }
+    @GetMapping
+    public List<BookDto> findAll(Authentication authentication, Pageable pageable) {
+        String userEmail = authentication.getName();
+        return bookService.findAll(userEmail, pageable);
+    }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get book by Id",
@@ -91,6 +83,4 @@ public class BookController {
     public List<BookDto> search(BookSearchParameters bookSearchParameters) {
         return bookService.search(bookSearchParameters);
     }
-
-
 }

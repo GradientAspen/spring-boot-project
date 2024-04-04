@@ -1,5 +1,15 @@
 package com.project.springbootproject.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+
 import com.project.springbootproject.dto.BookDto;
 import com.project.springbootproject.dto.BookDtoWithoutCategoryIds;
 import com.project.springbootproject.dto.BookRequestDto;
@@ -9,6 +19,12 @@ import com.project.springbootproject.model.Book;
 import com.project.springbootproject.repository.book.BookRepository;
 import com.project.springbootproject.repository.book.BookSpecificationBuilder;
 import com.project.springbootproject.repository.category.CategoryRepository;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,23 +35,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.jdbc.Sql;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class BookServiceImplTest {
@@ -74,7 +73,8 @@ class BookServiceImplTest {
 
         Set<Long> categoryIdsSet = new HashSet<>(categoryIds);
 
-        when(categoryRepository.findCategoriesByIdIn(new ArrayList<>(categoryIdsSet))).thenReturn(new HashSet<>());
+        when(categoryRepository.findCategoriesByIdIn(new ArrayList<>(categoryIdsSet)))
+                .thenReturn(new HashSet<>());
 
         Book book = new Book();
         book.setId(1L);
@@ -212,19 +212,20 @@ class BookServiceImplTest {
         // Then
         verify(bookRepository, times(1)).deleteById(bookId);
     }
+
     @Test
     @Sql(scripts = "classpath:database/books/delete-all-books.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("Update Book: Existing ID")
     void updateBook_ExistingId_UpdatesBook() {
         // Given
-        Long bookId = 1L;
         BookRequestDto bookRequestDto = new BookRequestDto();
         bookRequestDto.setTitle("Updated Title");
         bookRequestDto.setAuthor("Updated Author");
         bookRequestDto.setIsbn("Updated ISBN");
         bookRequestDto.setPrice(BigDecimal.valueOf(25.99));
 
+        Long bookId = 1L;
         Book existingBook = new Book();
         existingBook.setId(bookId);
         existingBook.setTitle("Original Title");
@@ -252,11 +253,11 @@ class BookServiceImplTest {
         when(bookRepository.findById(nonExistingId)).thenReturn(Optional.empty());
 
         // When, Then
-        assertThrows(EntityNotFoundException.class, () -> bookService.updateBook(bookRequestDto, nonExistingId));
+        assertThrows(EntityNotFoundException.class, () -> bookService
+                .updateBook(bookRequestDto, nonExistingId));
         verify(bookRepository, times(1)).findById(nonExistingId);
         verifyNoMoreInteractions(bookMapper, bookRepository);
     }
-
 
     @Test
     @Sql(scripts = "classpath:database/books/delete-all-books.sql",
@@ -264,7 +265,7 @@ class BookServiceImplTest {
     @DisplayName("Find book by category Id")
     void findBooksByCategoryId_ReturnsListOfBookDtoWithoutCategoryIds() {
         // Given
-        Long categoryId = 1L;
+
         Book book1 = new Book();
         book1.setId(1L);
         book1.setTitle("Book 1");
@@ -282,6 +283,7 @@ class BookServiceImplTest {
         List<Book> books = new ArrayList<>();
         books.add(book1);
         books.add(book2);
+        Long categoryId = 1L;
 
         when(bookRepository.findAllByCategoriesId(categoryId)).thenReturn(books);
 
@@ -303,10 +305,11 @@ class BookServiceImplTest {
         expectedBookDtos.add(bookDto1);
         expectedBookDtos.add(bookDto2);
 
-        when(bookMapper.toDtoWithoutCategories(any())).thenReturn(bookDto1, bookDto2);
-
+        when(bookMapper.toDtoWithoutCategories(any()))
+                .thenReturn(bookDto1, bookDto2);
         // When
-        List<BookDtoWithoutCategoryIds> foundBookDtos = bookService.findBooksByCategoryId(categoryId);
+        List<BookDtoWithoutCategoryIds> foundBookDtos = bookService
+                .findBooksByCategoryId(categoryId);
 
         // Then
         assertNotNull(foundBookDtos);
