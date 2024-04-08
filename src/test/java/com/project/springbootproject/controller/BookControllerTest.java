@@ -62,6 +62,30 @@ class BookControllerTest {
 
     }
 
+    private BookRequestDto getBookRequestDto(Long id, String title, String author,
+                                             String isbn, String description,
+                                             BigDecimal price, List<Long> categoryIds) {
+        BookRequestDto bookRequestDto = new BookRequestDto()
+                .setId(id)
+                .setTitle(title)
+                .setAuthor(author)
+                .setIsbn(isbn)
+                .setDescription(description)
+                .setPrice(price)
+                .setCategoryIds(categoryIds);
+        return bookRequestDto;
+    }
+
+    private BookRequestDto getBookRequestDto() {
+        BookRequestDto bookRequestDto = new BookRequestDto()
+                .setId(1L)
+                .setTitle("Math")
+                .setAuthor("Semen Semenchenko")
+                .setIsbn("isbn123")
+                .setPrice(BigDecimal.valueOf(25.25));
+        return bookRequestDto;
+    }
+
     @WithMockUser(username = "adminF@ukr.net", roles = {"ADMIN"})
     @Test
     @Sql(scripts = "classpath:database/books/delete-math-books.sql",
@@ -69,11 +93,7 @@ class BookControllerTest {
     @DisplayName("Create a new book")
     void createBook_ValidRequestDto_Success() throws Exception {
         //Given
-        BookRequestDto bookRequestDto = new BookRequestDto()
-                .setTitle("Math")
-                .setAuthor("Semen Semenchenko")
-                .setIsbn("isbn123")
-                .setPrice(BigDecimal.valueOf(2500));
+        BookRequestDto bookRequestDto = getBookRequestDto();
         BookDto expected = new BookDto()
                 .setTitle(bookRequestDto.getTitle())
                 .setAuthor(bookRequestDto.getAuthor())
@@ -91,7 +111,6 @@ class BookControllerTest {
                 .andReturn();
 
         //Then
-
         BookDto actual = objectMapper.readValue(result
                 .getResponse()
                 .getContentAsString(), BookDto.class);
@@ -110,16 +129,25 @@ class BookControllerTest {
 
         //Given
         List<BookRequestDto> expected = new ArrayList<>();
-        expected.add(new BookRequestDto().setId(1L).setTitle("World")
-                .setAuthor("Ivan Goncharenko").setIsbn("isbn11")
-                .setPrice(BigDecimal.valueOf(1300.12)).setCategoryIds(Collections.emptyList()));
-        expected.add(new BookRequestDto().setId(2L).setTitle("Oceans")
-                .setAuthor("Ivan Goncharenko").setIsbn("isbn12")
-                .setPrice(BigDecimal.valueOf(1700.12)).setCategoryIds(Collections.emptyList()));
-        expected.add(new BookRequestDto().setId(3L).setTitle("Forests")
-                .setAuthor("Semen Petrenko").setIsbn("isbn13")
-                .setPrice(BigDecimal.valueOf(2800.12)).setCategoryIds(Collections.emptyList()));
-        for (BookRequestDto dto:expected) {
+        expected.add(getBookRequestDto(1L,
+                "World",
+                "Ivan Goncharenko",
+                "isbn11", "Des1",
+                BigDecimal.valueOf(1300.12), Collections.emptyList()));
+
+        expected.add(getBookRequestDto(2L,
+                "Oceans",
+                "Ivan Goncharenko",
+                "isbn12", "Des2",
+                BigDecimal.valueOf(1700.12), Collections.emptyList()));
+
+        expected.add(getBookRequestDto(3L,
+                "Forests",
+                "Semen Petrenko",
+                "isbn13", "Des3",
+                BigDecimal.valueOf(2800.12), Collections.emptyList()));
+
+        for (BookRequestDto dto : expected) {
             bookService.save(dto);
         }
 
@@ -144,13 +172,7 @@ class BookControllerTest {
     @DisplayName("Get books bu Id")
     void getBookById_ShouldReturnBook_Ok() throws Exception {
         // Given
-        BookRequestDto bookRequestDto = new BookRequestDto();
-        bookRequestDto.setTitle("Sample Book");
-        bookRequestDto.setAuthor("Sample Author");
-        bookRequestDto.setIsbn("1234567890");
-        bookRequestDto.setPrice(BigDecimal.valueOf(19.99));
-        bookRequestDto.setCategoryIds(new ArrayList<>());
-
+        BookRequestDto bookRequestDto = getBookRequestDto();
         BookDto save = bookService.save(bookRequestDto);
 
         // When
@@ -175,12 +197,7 @@ class BookControllerTest {
     @DisplayName("Delete book by ID")
     void deleteBookById_AdminRole_Success() throws Exception {
         // Given
-        BookRequestDto bookToDeleteDto = new BookRequestDto()
-                .setId(5L)
-                .setTitle("Sample Book")
-                .setAuthor("Sample Author")
-                .setIsbn("1234567890")
-                .setPrice(BigDecimal.valueOf(19.99));
+        BookRequestDto bookToDeleteDto = getBookRequestDto();
 
         BookDto savedBook = bookService.save(bookToDeleteDto);
 
@@ -190,7 +207,6 @@ class BookControllerTest {
 
         // Then
         Assertions.assertThrows(EntityNotFoundException.class, () -> {
-            // Check if the book exists in the database using the service
             bookService.findBookById(savedBook.getId());
         });
     }
@@ -225,8 +241,6 @@ class BookControllerTest {
     @Sql(scripts = "classpath:database/books/delete-all-books.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("Update book by ID")
-    @Sql(scripts = "classpath:database/books/delete-all-books.sql",
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void updateBook_AdminRole_Success() throws Exception {
         // Given
         Book book = new Book();
@@ -270,18 +284,16 @@ class BookControllerTest {
         String[] descriptions = {"Description1", "Description2"};
         BookSearchParameters searchParameters = new BookSearchParameters(authors, descriptions);
 
-        BookRequestDto book1RequestDto = new BookRequestDto()
-                .setAuthor("Author1")
-                .setDescription("Description1")
-                .setTitle("Title1")
-                .setIsbn("ISBN1")
-                .setPrice(BigDecimal.valueOf(15.78));
-        BookRequestDto book2RequestDto = new BookRequestDto()
-                .setAuthor("Author2")
-                .setDescription("Description2")
-                .setTitle("Title2")
-                .setIsbn("ISBN2")
-                .setPrice(BigDecimal.valueOf(20.15));
+        BookRequestDto book1RequestDto = getBookRequestDto(1L, "Test",
+                "Author1",
+                "ISBN123", "Description1",
+                BigDecimal.valueOf(15.78), Collections.emptyList());
+
+        BookRequestDto book2RequestDto = getBookRequestDto(2L, "Title2",
+                "Author2",
+                "ISBN2", "Description2",
+                BigDecimal.valueOf(20.15), Collections.emptyList());
+
         bookService.save(book1RequestDto);
         bookService.save(book2RequestDto);
 

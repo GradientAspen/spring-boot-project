@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -14,6 +15,7 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction("is_deleted = FALSE")
 @Entity
 @Data
+@Accessors(chain = true)
 @Table(name = "categories")
 public class Category {
     @Id

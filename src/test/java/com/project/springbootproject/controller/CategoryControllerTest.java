@@ -60,6 +60,20 @@ class CategoryControllerTest {
                 .build();
     }
 
+    private CategoryDto getCategoryDto() {
+        CategoryDto categoryDto = new CategoryDto()
+                .setName("Test Category")
+                .setDescription("Test Description");
+        return categoryDto;
+    }
+
+    private CategoryDto getCategoryDto(String name, String description) {
+        CategoryDto categoryDto = new CategoryDto()
+                .setName(name)
+                .setDescription(description);
+        return categoryDto;
+    }
+
     @WithMockUser(username = "adminF@ukr.net", roles = {"ADMIN"})
     @Test
     @Sql(scripts = "classpath:database/category/delete-all-categories.sql",
@@ -67,10 +81,7 @@ class CategoryControllerTest {
     @DisplayName("Create category")
     void createCategory() throws Exception {
         // Given
-        CategoryDto categoryDto = new CategoryDto()
-                .setId(1L)
-                .setName("Test Category")
-                .setDescription("Test Description");
+        CategoryDto categoryDto = getCategoryDto();
         CategoryDto expected = new CategoryDto()
                 .setId(categoryDto.getId())
                 .setName(categoryDto.getName())
@@ -104,10 +115,8 @@ class CategoryControllerTest {
     void findAllCategories() throws Exception {
         // Given
         List<CategoryDto> expectedCategories = new ArrayList<>();
-        expectedCategories.add(new CategoryDto()
-                .setName("Category1").setDescription("Description1"));
-        expectedCategories.add(new CategoryDto()
-                .setName("Category2").setDescription("Description2"));
+        expectedCategories.add(getCategoryDto("Category1", "Description1"));
+        expectedCategories.add(getCategoryDto("Category2", "Description2"));
 
         for (CategoryDto dto : expectedCategories) {
             categoryService.save(dto);
@@ -122,10 +131,10 @@ class CategoryControllerTest {
         CategoryDto[] actual = objectMapper.readValue(result.getResponse()
                 .getContentAsByteArray(), CategoryDto[].class);
         Assertions.assertEquals(2, actual.length);
-        Assertions.assertEquals("Category1",actual[0].getName());
-        Assertions.assertEquals("Category2",actual[1].getName());
-        Assertions.assertEquals("Description1",actual[0].getDescription());
-        Assertions.assertEquals("Description2",actual[1].getDescription());
+        Assertions.assertEquals("Category1", actual[0].getName());
+        Assertions.assertEquals("Category2", actual[1].getName());
+        Assertions.assertEquals("Description1", actual[0].getDescription());
+        Assertions.assertEquals("Description2", actual[1].getDescription());
     }
 
     @WithMockUser(username = "adminF@ukr.net", roles = {"ADMIN"})
@@ -136,9 +145,7 @@ class CategoryControllerTest {
     void getCategoryById() throws Exception {
         // Given
 
-        CategoryDto expectedCategory = new CategoryDto()
-                .setName("Test1")
-                .setDescription("Test Description");
+        CategoryDto expectedCategory = getCategoryDto();
         CategoryDto save = categoryService.save(expectedCategory);
 
         // When
@@ -162,9 +169,7 @@ class CategoryControllerTest {
     @DisplayName("Update category by ID")
     void updateCategoryById() throws Exception {
 
-        CategoryDto updatedCategory = new CategoryDto()
-                .setName("Updated Name")
-                .setDescription("Updated Description");
+        CategoryDto updatedCategory = getCategoryDto();
         CategoryDto save = categoryService.save(updatedCategory);
 
         // When/Then
@@ -189,10 +194,7 @@ class CategoryControllerTest {
     public void deleteCategory_AdminRole_Success() throws Exception {
         // Given
         Long categoryId = 1L;
-        CategoryDto categoryToDel = new CategoryDto()
-                .setId(categoryId)
-                .setName("Deleted Name")
-                .setDescription("Deleted Description");
+        CategoryDto categoryToDel = getCategoryDto();
         CategoryDto save = categoryService.save(categoryToDel);
 
         // When
@@ -211,24 +213,20 @@ class CategoryControllerTest {
     @DisplayName("Get Books By category ID")
     public void getBooksByCategory_Success() throws Exception {
         // Given
-        Long categoryId = 1L;
-
-        // Save a category
-        CategoryDto categoryToSave = new CategoryDto()
-                .setId(categoryId)
-                .setName("Test Category")
-                .setDescription("Test Description");
+        CategoryDto categoryToSave = getCategoryDto();
         categoryService.save(categoryToSave);
+        Long categoryIdd = 1L;
 
         BookRequestDto bookRequestDto = new BookRequestDto();
         bookRequestDto.setTitle("Sample Book");
         bookRequestDto.setAuthor("Sample Author");
         bookRequestDto.setIsbn("1234567890");
         bookRequestDto.setPrice(BigDecimal.valueOf(19.99));
-        bookRequestDto.setCategoryIds(Collections.singletonList(categoryId));
+        bookRequestDto.setCategoryIds(Collections.singletonList(categoryIdd));
         bookService.save(bookRequestDto);
 
         // When
+        Long categoryId = 1L;
         MvcResult result = mockMvc.perform(get("/category/{id}/books", categoryId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -237,7 +235,8 @@ class CategoryControllerTest {
         // Then
         String content = result.getResponse().getContentAsString();
         List<BookDtoWithoutCategoryIds> books = objectMapper.readValue(content,
-                new TypeReference<>() {});
+                new TypeReference<>() {
+                });
         Assertions.assertNotNull(books);
         Assertions.assertFalse(books.isEmpty());
 

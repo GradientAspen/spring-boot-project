@@ -37,6 +37,38 @@ class CategoryServiceImplTest {
     @InjectMocks
     private CategoryServiceImpl categoryService;
 
+    private CategoryDto getCategoryDto() {
+        CategoryDto categoryDto = new CategoryDto()
+                .setId(20L)
+                .setName("Test Category")
+                .setDescription("Test Description");
+        return categoryDto;
+    }
+
+    private CategoryDto getCategoryDto(Long id, String name, String description) {
+        CategoryDto categoryDto = new CategoryDto()
+                .setId(id)
+                .setName(name)
+                .setDescription(description);
+        return categoryDto;
+    }
+
+    private Category getCategory() {
+        Category category = new Category()
+                .setId(20L)
+                .setName("Test Category")
+                .setDescription("Test Description");
+        return category;
+    }
+
+    private Category getCategory(Long id, String name, String description) {
+        Category category = new Category()
+                .setId(id)
+                .setName(name)
+                .setDescription(description);
+        return category;
+    }
+
     @Test
     @Sql(scripts = "classpath:database/category/delete-all-categories.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
@@ -44,25 +76,17 @@ class CategoryServiceImplTest {
     void findAll_ReturnsListOfCategoryDto() {
         // Given
         List<Category> categories = new ArrayList<>();
-        Category category1 = new Category();
-        category1.setId(1L);
-        category1.setName("Category 1");
+        Category category1 = getCategory(1L, "Category 1", "Desc 1");
         categories.add(category1);
 
-        Category category2 = new Category();
-        category2.setId(2L);
-        category2.setName("Category 2");
+        Category category2 = getCategory(2L, "Category 2", "Desc 2");
         categories.add(category2);
 
         when(categoryRepository.findAll()).thenReturn(categories);
 
-        CategoryDto categoryDto1 = new CategoryDto();
-        categoryDto1.setId(1L);
-        categoryDto1.setName("Category 1");
+        CategoryDto categoryDto1 = getCategoryDto(1L, "Category 1", "Test 1");
 
-        CategoryDto categoryDto2 = new CategoryDto();
-        categoryDto2.setId(2L);
-        categoryDto2.setName("Category 2");
+        CategoryDto categoryDto2 = getCategoryDto(2L, "Category 2", "Test 2");
 
         List<CategoryDto> expectedCategoryDtos = new ArrayList<>();
         expectedCategoryDtos.add(categoryDto1);
@@ -87,9 +111,7 @@ class CategoryServiceImplTest {
     void getById_ExistingId_ReturnsCategoryDto() {
         // Given
         Long categoryId = 1L;
-        Category category = new Category();
-        category.setId(categoryId);
-        category.setName("Category Name");
+        Category category = getCategory();
 
         CategoryDto expectedCategoryDto = new CategoryDto();
         expectedCategoryDto.setId(categoryId);
@@ -126,16 +148,11 @@ class CategoryServiceImplTest {
     @DisplayName("SAve category in DB")
     void save_ValidCategoryDto_ReturnsSavedCategoryDto() {
         // Given
-        CategoryDto categoryDto = new CategoryDto();
-        categoryDto.setName("Test Category");
+        CategoryDto categoryDto = getCategoryDto();
 
-        Category category = new Category();
-        category.setId(1L);
-        category.setName("Test Category");
+        Category category = getCategory();
 
-        CategoryDto expectedCategoryDto = new CategoryDto();
-        expectedCategoryDto.setId(1L);
-        expectedCategoryDto.setName("Test Category");
+        CategoryDto expectedCategoryDto = getCategoryDto();
 
         when(categoryMapper.toEntity(categoryDto)).thenReturn(category);
         when(categoryRepository.save(category)).thenReturn(category);
@@ -156,16 +173,14 @@ class CategoryServiceImplTest {
     void update_ExistingIdAndValidCategoryDto_SuccessfulUpdate() {
         // Given
         Long categoryId = 1L;
-        CategoryDto categoryDto = new CategoryDto();
-        categoryDto.setName("Updated Category");
 
-        Category existingCategory = new Category();
-        existingCategory.setId(categoryId);
-        existingCategory.setName("Original Category");
+        Category existingCategory = getCategory();
 
         Category updatedCategory = new Category();
-        updatedCategory.setId(categoryId);
+        updatedCategory.setId(existingCategory.getId());
         updatedCategory.setName("Updated Category");
+        CategoryDto categoryDto = getCategoryDto(20L, "Updated Category",
+                "Test1");
         when(categoryRepository.findById(categoryId)).thenReturn(Optional.of(existingCategory));
         doNothing().when(categoryMapper)
                 .updateCategoryFromCategoryDto(categoryDto, existingCategory);
@@ -187,8 +202,7 @@ class CategoryServiceImplTest {
     void update_NonExistingId_ThrowsEntityNotFoundException() {
         // Given
         Long categoryId = 1L;
-        CategoryDto categoryDto = new CategoryDto();
-        categoryDto.setName("Updated Category");
+        CategoryDto categoryDto = getCategoryDto();
 
         when(categoryRepository.findById(categoryId)).thenReturn(Optional.empty());
 
