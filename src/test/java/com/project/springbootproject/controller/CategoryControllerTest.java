@@ -17,12 +17,10 @@ import com.project.springbootproject.dto.categorydto.CategoryDto;
 import com.project.springbootproject.exception.EntityNotFoundException;
 import com.project.springbootproject.service.BookService;
 import com.project.springbootproject.service.category.CategoryService;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
