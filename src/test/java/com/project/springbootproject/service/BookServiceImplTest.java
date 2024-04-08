@@ -301,7 +301,6 @@ class BookServiceImplTest {
         Book book1 = getBook(1L, "Book 1",
                 "Author 1", "ISBN 1", BigDecimal.valueOf(10.99));
 
-
         Book book2 = getBook(2L, "Book 2",
                 "Author 2", "ISBN 2", BigDecimal.valueOf(15.99));
 

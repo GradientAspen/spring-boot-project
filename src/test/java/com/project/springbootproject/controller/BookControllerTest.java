@@ -86,6 +86,15 @@ class BookControllerTest {
         return bookRequestDto;
     }
 
+    private Book getBook() {
+        Book book = new Book().setId(1L)
+                .setTitle("Maths")
+                .setAuthor("Semen Semen")
+                .setIsbn("Isbn565")
+                .setPrice(BigDecimal.valueOf(87.25));
+        return book;
+    }
+
     @WithMockUser(username = "adminF@ukr.net", roles = {"ADMIN"})
     @Test
     @Sql(scripts = "classpath:database/books/delete-math-books.sql",
@@ -218,11 +227,7 @@ class BookControllerTest {
     @DisplayName("Delete book by ID - Unauthorized")
     void deleteBookById_NoUser_Unauthorized() throws Exception {
         // Given
-        Book bookToDelete = new Book();
-        bookToDelete.setTitle("Sample Book");
-        bookToDelete.setAuthor("Sample Author");
-        bookToDelete.setIsbn("1234567890");
-        bookToDelete.setPrice(BigDecimal.valueOf(19.99));
+        Book bookToDelete = getBook();
         bookRepository.save(bookToDelete);
 
         Long id = bookToDelete.getId();
@@ -243,19 +248,15 @@ class BookControllerTest {
     @DisplayName("Update book by ID")
     void updateBook_AdminRole_Success() throws Exception {
         // Given
-        Book book = new Book();
-        book.setTitle("Sample Book");
-        book.setAuthor("Sample Author");
-        book.setIsbn("1234567890");
-        book.setPrice(BigDecimal.valueOf(19.99));
+        Book book = getBook();
         bookRepository.save(book);
 
         Long id = book.getId();
 
-        BookRequestDto bookDto = new BookRequestDto()
-                .setTitle("Updated Title")
-                .setAuthor("Updated Author")
-                .setIsbn("Updated ISBN");
+        BookRequestDto bookDto = getBookRequestDto(book.getId(), "Updated Title",
+                "Updated Author", "Updated ISBN",
+                "Updated DEs", BigDecimal.valueOf(20.15), Collections.emptyList());
+
         String jsonRequest = objectMapper.writeValueAsString(bookDto);
 
         // When
