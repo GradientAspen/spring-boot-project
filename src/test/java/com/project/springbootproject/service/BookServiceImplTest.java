@@ -53,70 +53,6 @@ class BookServiceImplTest {
     @InjectMocks
     private BookServiceImpl bookService;
 
-    private BookRequestDto getBookRequestDto(Long id, String title, String author,
-                                             String isbn, BigDecimal price,
-                                             List<Long> categoryIds) {
-        BookRequestDto bookRequestDto = new BookRequestDto()
-                .setId(id)
-                .setTitle(title)
-                .setAuthor(author)
-                .setIsbn(isbn)
-                .setPrice(price)
-                .setCategoryIds(categoryIds);
-        return bookRequestDto;
-    }
-
-    private BookRequestDto getBookRequestDto() {
-        BookRequestDto bookRequestDto = new BookRequestDto()
-                .setId(1L)
-                .setTitle("Math")
-                .setAuthor("Semen Semenchenko")
-                .setIsbn("isbn123")
-                .setPrice(BigDecimal.valueOf(25.25));
-        return bookRequestDto;
-    }
-
-    private Book getBook() {
-        Book book = new Book()
-                .setId(20L)
-                .setTitle("Math")
-                .setAuthor("Petrenko")
-                .setIsbn("isbn345")
-                .setPrice(BigDecimal.valueOf(87.15));
-        return book;
-    }
-
-    private Book getBook(Long id, String title, String author, String isbn, BigDecimal price) {
-        Book book = new Book()
-                .setId(id)
-                .setTitle(title)
-                .setAuthor(author)
-                .setIsbn(isbn)
-                .setPrice(price);
-        return book;
-    }
-
-    private BookDto getBookDto() {
-        BookDto bookDto = new BookDto()
-                .setId(20L)
-                .setTitle("Dto Book")
-                .setAuthor("Semen")
-                .setIsbn("ISBN142")
-                .setPrice(BigDecimal.valueOf(55.25));
-        return bookDto;
-    }
-
-    private BookDto getBookDto(Long id, String title, String author,
-                               String isbn, BigDecimal price) {
-        BookDto bookDto = new BookDto()
-                .setId(id)
-                .setTitle(title)
-                .setAuthor(author)
-                .setIsbn(isbn)
-                .setPrice(price);
-        return bookDto;
-    }
-
     @Test
     @Sql(scripts = "classpath:database/category/delete-all-categories.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
@@ -297,7 +233,6 @@ class BookServiceImplTest {
     @DisplayName("Find book by category Id")
     void findBooksByCategoryId_ReturnsListOfBookDtoWithoutCategoryIds() {
         // Given
-
         Book book1 = getBook(1L, "Book 1",
                 "Author 1", "ISBN 1", BigDecimal.valueOf(10.99));
 
@@ -339,5 +274,69 @@ class BookServiceImplTest {
         assertNotNull(foundBookDtos);
         assertEquals(2, foundBookDtos.size());
         assertEquals(expectedBookDtos, foundBookDtos);
+    }
+
+    private BookRequestDto getBookRequestDto(Long id, String title, String author,
+                                             String isbn, BigDecimal price,
+                                             List<Long> categoryIds) {
+        BookRequestDto bookRequestDto = new BookRequestDto()
+                .setId(id)
+                .setTitle(title)
+                .setAuthor(author)
+                .setIsbn(isbn)
+                .setPrice(price)
+                .setCategoryIds(categoryIds);
+        return bookRequestDto;
+    }
+
+    private BookRequestDto getBookRequestDto() {
+        BookRequestDto bookRequestDto = new BookRequestDto()
+                .setId(1L)
+                .setTitle("Math")
+                .setAuthor("Semen Semenchenko")
+                .setIsbn("isbn123")
+                .setPrice(BigDecimal.valueOf(25.25));
+        return bookRequestDto;
+    }
+
+    private Book getBook() {
+        Book book = new Book()
+                .setId(20L)
+                .setTitle("Math")
+                .setAuthor("Petrenko")
+                .setIsbn("isbn345")
+                .setPrice(BigDecimal.valueOf(87.15));
+        return book;
+    }
+
+    private Book getBook(Long id, String title, String author, String isbn, BigDecimal price) {
+        Book book = new Book()
+                .setId(id)
+                .setTitle(title)
+                .setAuthor(author)
+                .setIsbn(isbn)
+                .setPrice(price);
+        return book;
+    }
+
+    private BookDto getBookDto() {
+        BookDto bookDto = new BookDto()
+                .setId(20L)
+                .setTitle("Dto Book")
+                .setAuthor("Semen")
+                .setIsbn("ISBN142")
+                .setPrice(BigDecimal.valueOf(55.25));
+        return bookDto;
+    }
+
+    private BookDto getBookDto(Long id, String title, String author,
+                               String isbn, BigDecimal price) {
+        BookDto bookDto = new BookDto()
+                .setId(id)
+                .setTitle(title)
+                .setAuthor(author)
+                .setIsbn(isbn)
+                .setPrice(price);
+        return bookDto;
     }
 }

@@ -62,39 +62,6 @@ class BookControllerTest {
 
     }
 
-    private BookRequestDto getBookRequestDto(Long id, String title, String author,
-                                             String isbn, String description,
-                                             BigDecimal price, List<Long> categoryIds) {
-        BookRequestDto bookRequestDto = new BookRequestDto()
-                .setId(id)
-                .setTitle(title)
-                .setAuthor(author)
-                .setIsbn(isbn)
-                .setDescription(description)
-                .setPrice(price)
-                .setCategoryIds(categoryIds);
-        return bookRequestDto;
-    }
-
-    private BookRequestDto getBookRequestDto() {
-        BookRequestDto bookRequestDto = new BookRequestDto()
-                .setId(1L)
-                .setTitle("Math")
-                .setAuthor("Semen Semenchenko")
-                .setIsbn("isbn123")
-                .setPrice(BigDecimal.valueOf(25.25));
-        return bookRequestDto;
-    }
-
-    private Book getBook() {
-        Book book = new Book().setId(1L)
-                .setTitle("Maths")
-                .setAuthor("Semen Semen")
-                .setIsbn("Isbn565")
-                .setPrice(BigDecimal.valueOf(87.25));
-        return book;
-    }
-
     @WithMockUser(username = "adminF@ukr.net", roles = {"ADMIN"})
     @Test
     @Sql(scripts = "classpath:database/books/delete-math-books.sql",
@@ -311,4 +278,36 @@ class BookControllerTest {
                 .andExpect(jsonPath("$[1].description").value("Description2"));
     }
 
+    private BookRequestDto getBookRequestDto(Long id, String title, String author,
+                                             String isbn, String description,
+                                             BigDecimal price, List<Long> categoryIds) {
+        BookRequestDto bookRequestDto = new BookRequestDto()
+                .setId(id)
+                .setTitle(title)
+                .setAuthor(author)
+                .setIsbn(isbn)
+                .setDescription(description)
+                .setPrice(price)
+                .setCategoryIds(categoryIds);
+        return bookRequestDto;
+    }
+
+    private BookRequestDto getBookRequestDto() {
+        BookRequestDto bookRequestDto = new BookRequestDto()
+                .setId(1L)
+                .setTitle("Math")
+                .setAuthor("Semen Semenchenko")
+                .setIsbn("isbn123")
+                .setPrice(BigDecimal.valueOf(25.25));
+        return bookRequestDto;
+    }
+
+    private Book getBook() {
+        Book book = new Book().setId(1L)
+                .setTitle("Maths")
+                .setAuthor("Semen Semen")
+                .setIsbn("Isbn565")
+                .setPrice(BigDecimal.valueOf(87.25));
+        return book;
+    }
 }

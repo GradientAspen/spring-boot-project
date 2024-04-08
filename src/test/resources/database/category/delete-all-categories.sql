@@ -1,2 +1,2 @@
-DELETE FROM books_categories WHERE category_id IN (SELECT id FROM categories);
-DELETE FROM categories;
+delete from books_categories where category_id in (select id from categories);
+delete from categories;

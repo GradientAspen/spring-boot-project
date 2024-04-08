@@ -37,38 +37,6 @@ class CategoryServiceImplTest {
     @InjectMocks
     private CategoryServiceImpl categoryService;
 
-    private CategoryDto getCategoryDto() {
-        CategoryDto categoryDto = new CategoryDto()
-                .setId(20L)
-                .setName("Test Category")
-                .setDescription("Test Description");
-        return categoryDto;
-    }
-
-    private CategoryDto getCategoryDto(Long id, String name, String description) {
-        CategoryDto categoryDto = new CategoryDto()
-                .setId(id)
-                .setName(name)
-                .setDescription(description);
-        return categoryDto;
-    }
-
-    private Category getCategory() {
-        Category category = new Category()
-                .setId(20L)
-                .setName("Test Category")
-                .setDescription("Test Description");
-        return category;
-    }
-
-    private Category getCategory(Long id, String name, String description) {
-        Category category = new Category()
-                .setId(id)
-                .setName(name)
-                .setDescription(description);
-        return category;
-    }
-
     @Test
     @Sql(scripts = "classpath:database/category/delete-all-categories.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
@@ -222,5 +190,37 @@ class CategoryServiceImplTest {
 
         // Then
         verify(categoryRepository).deleteById(categoryId);
+    }
+
+    private CategoryDto getCategoryDto() {
+        CategoryDto categoryDto = new CategoryDto()
+                .setId(20L)
+                .setName("Test Category")
+                .setDescription("Test Description");
+        return categoryDto;
+    }
+
+    private CategoryDto getCategoryDto(Long id, String name, String description) {
+        CategoryDto categoryDto = new CategoryDto()
+                .setId(id)
+                .setName(name)
+                .setDescription(description);
+        return categoryDto;
+    }
+
+    private Category getCategory() {
+        Category category = new Category()
+                .setId(20L)
+                .setName("Test Category")
+                .setDescription("Test Description");
+        return category;
+    }
+
+    private Category getCategory(Long id, String name, String description) {
+        Category category = new Category()
+                .setId(id)
+                .setName(name)
+                .setDescription(description);
+        return category;
     }
 }

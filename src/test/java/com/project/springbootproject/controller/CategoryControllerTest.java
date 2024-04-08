@@ -17,10 +17,12 @@ import com.project.springbootproject.dto.categorydto.CategoryDto;
 import com.project.springbootproject.exception.EntityNotFoundException;
 import com.project.springbootproject.service.BookService;
 import com.project.springbootproject.service.category.CategoryService;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -60,20 +62,6 @@ class CategoryControllerTest {
                 .build();
     }
 
-    private CategoryDto getCategoryDto() {
-        CategoryDto categoryDto = new CategoryDto()
-                .setName("Test Category")
-                .setDescription("Test Description");
-        return categoryDto;
-    }
-
-    private CategoryDto getCategoryDto(String name, String description) {
-        CategoryDto categoryDto = new CategoryDto()
-                .setName(name)
-                .setDescription(description);
-        return categoryDto;
-    }
-
     @WithMockUser(username = "adminF@ukr.net", roles = {"ADMIN"})
     @Test
     @Sql(scripts = "classpath:database/category/delete-all-categories.sql",
@@ -102,7 +90,6 @@ class CategoryControllerTest {
         Assertions.assertNotNull(actual);
         Assertions.assertNotNull(actual.getId());
         EqualsBuilder.reflectionEquals(expected, actual, "id");
-
     }
 
     @WithMockUser(username = "adminF@ukr.net", roles = {"ADMIN"})
@@ -246,5 +233,19 @@ class CategoryControllerTest {
             Assertions.assertEquals("1234567890", book.getIsbn());
             Assertions.assertEquals(BigDecimal.valueOf(19.99), book.getPrice());
         }
+    }
+
+    private CategoryDto getCategoryDto() {
+        CategoryDto categoryDto = new CategoryDto()
+                .setName("Test Category")
+                .setDescription("Test Description");
+        return categoryDto;
+    }
+
+    private CategoryDto getCategoryDto(String name, String description) {
+        CategoryDto categoryDto = new CategoryDto()
+                .setName(name)
+                .setDescription(description);
+        return categoryDto;
     }
 }
