@@ -3,7 +3,6 @@ package com.project.springbootproject.controller;
 import com.project.springbootproject.dto.BookDto;
 import com.project.springbootproject.dto.BookRequestDto;
 import com.project.springbootproject.dto.BookSearchParameters;
-import com.project.springbootproject.model.User;
 import com.project.springbootproject.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -36,8 +35,8 @@ public class BookController {
 
     @GetMapping
     public List<BookDto> findAll(Authentication authentication, Pageable pageable) {
-        User user = (User) authentication.getPrincipal();
-        return bookService.findAll(user.getEmail(), pageable);
+        String userEmail = authentication.getName();
+        return bookService.findAll(userEmail, pageable);
     }
 
     @GetMapping("/{id}")
@@ -49,6 +48,7 @@ public class BookController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Add book in DB",
             description = "Add book in DB "
                     + "Only users with Role Admin have the ability  add book in DB.  ")
